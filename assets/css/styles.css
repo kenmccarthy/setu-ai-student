@@ -1,0 +1,940 @@
+/* ============================================================
+   AI at SETU — Student Course
+   Design system: clean, neutral, accessible (WCAG AA target).
+   Shared with the staff programme (AI Literacy, AI Competency,
+   AI Fluency) so every SETU AI course reads as one family. SETU
+   brand colours/logo live in the tokens below.
+   ============================================================ */
+
+:root {
+  /* ---- SETU brand colours (Brand Guidelines v1, May 2022) ---- */
+  --brand:        #435465;   /* Primary — Slate Grey (Pantone 7547) */
+  --brand-strong: #33414f;   /* darker slate for headings / hovers */
+  --brand-tint:   #eaedf1;   /* ~15% slate tint */
+
+  /* ---- SETU secondary palette (accents) ---- */
+  --sunset-red:    #E74751;
+  --sunrise-yellow:#FCCA3A;
+  --suir-blue:     #2AC5F4;
+  --barrow-blue:   #0062AF;
+  --sea-green:     #378B84;
+  --grass-green:   #4EB47D;
+  --heather:       #5F5AA8;
+  --clover:        #A752A0;
+
+  /* ---- Course accent — THE ONE LINE TO CHANGE to re-theme this course ----
+     Pick any colour from the SETU secondary palette above. --accent,
+     --accent-tint, --ok and --ok-tint (light + dark) are all derived
+     from this single value, and every component in this file reads
+     from those four tokens rather than a hardcoded palette name — so
+     changing this one line re-themes the whole course consistently.
+     AI Literacy uses --sea-green; AI Competency uses --clover;
+     AI Fluency uses --barrow-blue; this student course uses
+     --grass-green. */
+  --accent-base:  var(--grass-green);
+  --accent:       var(--accent-base);
+  --accent-tint:  color-mix(in srgb, var(--accent-base) 12%, white);
+
+  /* ---- Neutrals ---- */
+  --bg:        #f4f5f7;
+  --surface:   #ffffff;
+  --surface-2: #eef0f3;
+  --border:    #d9dde3;
+  --text:      #3a4653;   /* Slate is used for body copy (guidelines) */
+  --text-soft: #55606d;
+  --text-mute: #79828f;
+
+  /* ---- Semantic (mapped to SETU secondary palette) ---- */
+  --warn:      #8a5a00;             --warn-tint: #fdf4dc;   /* Sunrise Yellow */
+  --danger:    #c62d38;             --danger-tint:#fbe7e8;  /* Sunset Red */
+  /* --ok tracks the course accent (see --accent-base above), darkened for
+     text contrast on light backgrounds — it is not tied to green. */
+  --ok:        color-mix(in srgb, var(--accent-base) 88%, black);
+  --ok-tint:   var(--accent-tint);
+  --info:      #0062AF;             --info-tint: #e4eff8;   /* Barrow Blue */
+
+  /* ---- Shape & type ---- */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px -12px rgba(16,24,40,.18);
+  --shadow-sm: 0 1px 2px rgba(16,24,40,.06);
+  --maxw: 760px;
+  --font:      'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-head: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Dark palette applies automatically from the OS/browser preference, UNLESS
+   the theme toggle has explicitly set data-theme (in which case that choice
+   wins in both directions — see the :root[data-theme="dark"] block below,
+   and :not([data-theme="light"]) here). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand:        #93a6b6;   /* lightened slate for dark bg */
+    --brand-strong: #b7c4d0;
+    --brand-tint:   #1b242d;
+    /* --accent-base itself isn't redeclared here — it cascades in from
+       :root above, so the light/dark accent always stay in sync. */
+    --accent:       color-mix(in srgb, var(--accent-base) 65%, white);
+    --accent-tint:  color-mix(in srgb, var(--accent-base) 20%, black);
+    --bg:        #0f151b;
+    --surface:   #171f27;
+    --surface-2: #1e2831;
+    --border:    #2b3540;
+    --text:      #e2e8ef;
+    --text-soft: #b4bfca;
+    --text-mute: #8894a1;
+    --warn:      #e6b545; --warn-tint: #26200f;
+    --danger:    #ef7a82; --danger-tint:#2c1618;
+    --ok:        var(--accent); --ok-tint: var(--accent-tint);
+    --info:      #5aa9e6; --info-tint: #0f2130;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -14px rgba(0,0,0,.6);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  --brand:        #93a6b6;
+  --brand-strong: #b7c4d0;
+  --brand-tint:   #1b242d;
+  --accent:       color-mix(in srgb, var(--accent-base) 65%, white);
+  --accent-tint:  color-mix(in srgb, var(--accent-base) 20%, black);
+  --bg:        #0f151b;
+  --surface:   #171f27;
+  --surface-2: #1e2831;
+  --border:    #2b3540;
+  --text:      #e2e8ef;
+  --text-soft: #b4bfca;
+  --text-mute: #8894a1;
+  --warn:      #e6b545; --warn-tint: #26200f;
+  --danger:    #ef7a82; --danger-tint:#2c1618;
+  --ok:        var(--accent); --ok-tint: var(--accent-tint);
+  --info:      #5aa9e6; --info-tint: #0f2130;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -14px rgba(0,0,0,.6);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------- Brand motif (U symbol) ---------------- */
+/* A large, very low-opacity SETU crest sits in the page's right-hand gutter
+   on wide screens only — .layout tops out at 1120px, so this only shows once
+   there's genuinely empty background to its right (never over the TOC or
+   the content card). Purely decorative: fixed, unclickable, hidden from
+   narrower viewports and from print.
+   The box is only HALF the width of the (3x-scaled) image, anchored to its
+   left edge, so only the motif's left half ever renders — the right half is
+   simply painted outside the box and clipped. `right` is tied to .layout's
+   own edge via calc(), so there's always a fixed 40px clearance from the
+   content column at any width, rather than a hand-tuned pixel offset. */
+body::before {
+  content: ""; display: none; position: fixed; z-index: 0; pointer-events: none;
+  top: 0; right: calc((100vw - 1120px) / 2 - 400px); width: 360px; height: 897px;
+  background: url("../img/setu-symbol.png") no-repeat left top / 720px 897px;
+  opacity: .05;
+}
+@media (min-width: 1500px) { body::before { display: block; } }
+@media (prefers-color-scheme: dark) {
+  body::before { background-image: url("../img/setu-symbol-white.png"); opacity: .06; }
+}
+:root[data-theme="dark"]  body::before { background-image: url("../img/setu-symbol-white.png"); opacity: .06; }
+:root[data-theme="light"] body::before { background-image: url("../img/setu-symbol.png"); opacity: .05; }
+@media print { body::before { display: none !important; } }
+
+/* ---------------- Visually-hidden (a11y) ---------------- */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ---------------- Skip link (a11y) ---------------- */
+.skip-link {
+  position: absolute; left: -999px; top: 0; z-index: 100;
+  background: var(--brand); color: #fff; padding: 10px 16px; border-radius: 0 0 8px 0;
+}
+.skip-link:focus { left: 0; }
+
+/* ---------------- Top bar ---------------- */
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.topbar__inner {
+  max-width: 1120px; margin: 0 auto; padding: 10px 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.brand-lockup { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.brand-logo { height: 40px; width: auto; flex: none; display: block; }
+.brand-logo--dark { display: none; }
+@media (prefers-color-scheme: dark){
+  .brand-logo--light { display: none; }
+  .brand-logo--dark  { display: block; }
+}
+:root[data-theme="dark"]  .brand-logo--light { display: none; }
+:root[data-theme="dark"]  .brand-logo--dark  { display: block; }
+:root[data-theme="light"] .brand-logo--light { display: block; }
+:root[data-theme="light"] .brand-logo--dark  { display: none; }
+.brand-divider { width: 1px; height: 30px; background: var(--border); flex: none; }
+.brand-text { min-width: 0; }
+.brand-text b { display: block; font-family: var(--font-head); font-weight: 700; font-size: 13px; line-height: 1.2; color: var(--brand-strong); }
+.brand-text span { display: block; font-size: 12px; color: var(--text-mute); }
+.topbar__spacer { flex: 1; }
+.theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 38px; height: 38px; border: 1px solid var(--border); background: var(--surface);
+  color: var(--text-soft); border-radius: 8px; cursor: pointer;
+}
+.theme-toggle:hover { background: var(--surface-2); color: var(--text); }
+.theme-toggle .icon { width: 18px; height: 18px; }
+.menu-btn {
+  display: none; border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); border-radius: 8px; padding: 8px 12px; cursor: pointer; font-size: 14px;
+}
+
+/* ---------------- Progress ---------------- */
+.progress {
+  display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-mute);
+}
+.progress__track {
+  width: 160px; height: 8px; background: var(--surface-2);
+  border-radius: 99px; overflow: hidden; border: 1px solid var(--border);
+}
+.progress__fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--brand));
+  transition: width .4s ease;
+}
+@media (max-width: 640px){ .progress__track{ width: 90px; } .progress__label-long{ display:none; } }
+
+/* ---------------- Layout ---------------- */
+.layout {
+  max-width: 1120px; margin: 0 auto; padding: 24px 20px 96px;
+  display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: start;
+}
+
+/* ---------------- Sidebar / TOC ---------------- */
+.toc-backdrop { display: none; }   /* only used as a drawer overlay on mobile */
+.toc {
+  position: sticky; top: 78px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px; box-shadow: var(--shadow-sm);
+}
+.toc h2 {
+  font-size: 12px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--text-mute); margin: 4px 6px 10px;
+}
+.toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+.toc li { margin: 1px 0; }
+#tocList a {
+  counter-increment: toc;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 8px; text-decoration: none;
+  color: var(--text-soft); font-size: 14px; line-height: 1.3;
+  border: 1px solid transparent;
+}
+#tocList a::before {
+  content: counter(toc);
+  width: 22px; height: 22px; flex: none; border-radius: 6px;
+  background: var(--surface-2); color: var(--text-mute);
+  display: grid; place-items: center; font-size: 12px; font-weight: 700;
+  border: 1px solid var(--border);
+}
+#tocList a:hover { background: var(--surface-2); color: var(--text); }
+#tocList a[aria-current="step"] {
+  background: var(--brand-tint); color: var(--brand-strong);
+  border-color: color-mix(in srgb, var(--brand) 25%, transparent); font-weight: 600;
+}
+#tocList a[aria-current="step"]::before { background: var(--brand); color: #fff; border-color: var(--brand); }
+#tocList a.is-done::before { background: var(--accent); color: #fff; border-color: var(--accent); content: "✓"; }
+
+/* Cross-course navigation — lives inside #toc (after the contents list) so
+   it's part of the same single sticky/drawer box, rather than a separate
+   element that has to be kept in sync with it while scrolling. */
+.course-links { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+.course-links .btn { width: 100%; justify-content: flex-start; color: #fff; }
+.course-links .btn--literacy   { background: var(--sea-green); }
+.course-links .btn--competency { background: var(--clover); }
+.course-links .btn--fluency    { background: var(--barrow-blue); }
+.course-links .btn--student    { background: var(--grass-green); }
+
+/* ---------------- Content column ---------------- */
+.content { min-width: 0; }
+
+.section { display: none; animation: fade .35s ease; }
+.section.is-active { display: block; }
+@keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.section__card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 36px clamp(20px, 4vw, 44px);
+  max-width: var(--maxw);
+}
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 10px;
+}
+.eyebrow .dot { width: 7px; height: 7px; border-radius: 99px; background: var(--accent); }
+.section h1 { font-family: var(--font-head); font-weight: 700; font-size: clamp(24px, 4vw, 32px); line-height: 1.15; margin: 0 0 6px; letter-spacing: -.01em; color: var(--brand-strong); }
+.section h2 { font-family: var(--font-head); font-weight: 700; font-size: 20px; margin: 32px 0 10px; letter-spacing: -.01em; color: var(--brand-strong); }
+.section h3 { font-family: var(--font-head); font-weight: 700; font-size: 16px; margin: 22px 0 6px; }
+.lede { font-size: 19px; color: var(--text-soft); margin: 0 0 8px; }
+.meta-row { display: flex; gap: 14px; flex-wrap: wrap; color: var(--text-mute); font-size: 13px; margin-top: 14px; }
+.meta-row span { display: inline-flex; align-items: center; gap: 6px; }
+
+.section p { margin: 0 0 14px; }
+.section ul, .section ol { margin: 0 0 16px; padding-left: 22px; }
+.section li { margin: 6px 0; }
+hr.rule { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+/* ---------------- Callouts ---------------- */
+.callout {
+  border: 1px solid var(--border); border-left-width: 4px;
+  border-radius: var(--radius-sm); padding: 14px 16px; margin: 18px 0;
+  background: var(--surface-2); font-size: 15.5px;
+}
+.callout__title { font-weight: 700; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
+.callout p:last-child { margin-bottom: 0; }
+.callout--key   { border-left-color: var(--accent); background: var(--accent-tint); }
+.callout--warn  { border-left-color: var(--warn);   background: var(--warn-tint); }
+.callout--info  { border-left-color: var(--info);   background: var(--info-tint); }
+.callout--setu  { border-left-color: var(--brand);  background: var(--brand-tint); }
+.callout .tag {
+  font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  background: var(--brand); color: #fff; padding: 2px 8px; border-radius: 99px;
+}
+
+/* Placeholder marker for SETU content */
+.placeholder {
+  border: 1px dashed color-mix(in srgb, var(--brand) 45%, var(--border));
+  background: repeating-linear-gradient(-45deg, transparent, transparent 12px,
+              color-mix(in srgb, var(--brand-tint) 60%, transparent) 12px,
+              color-mix(in srgb, var(--brand-tint) 60%, transparent) 24px);
+  border-radius: var(--radius-sm); padding: 16px; margin: 16px 0;
+}
+.placeholder__flag {
+  display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .05em;
+  text-transform: uppercase; color: #fff; background: var(--brand);
+  padding: 3px 9px; border-radius: 99px; margin-bottom: 8px;
+}
+.placeholder p:last-child { margin-bottom: 0; }
+
+/* ---------------- Card grids ---------------- */
+.grid { display: grid; gap: 14px; margin: 18px 0; }
+.grid--2 { grid-template-columns: repeat(2, 1fr); }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 620px){ .grid--2, .grid--3 { grid-template-columns: 1fr; } }
+
+.tile {
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 16px; background: var(--surface); box-shadow: var(--shadow-sm);
+}
+.tile__icon { font-size: 22px; margin-bottom: 6px; }
+.tile h3 { margin: 0 0 4px; font-size: 15px; }
+.tile p { margin: 0; font-size: 14px; color: var(--text-soft); }
+
+/* Concept ladder (AI → ML → LLM → GenAI → Agents) */
+.ladder { display: grid; gap: 10px; margin: 18px 0; }
+.ladder__row {
+  display: grid; grid-template-columns: 130px 1fr; gap: 14px; align-items: start;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 12px 14px; background: var(--surface);
+}
+.ladder__row b { color: var(--brand-strong); }
+.ladder__row span { font-size: 14.5px; color: var(--text-soft); }
+@media (max-width: 560px){ .ladder__row{ grid-template-columns: 1fr; gap: 4px; } }
+
+/* ---------------- Interactive activity ---------------- */
+.activity {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface-2); padding: 18px; margin: 20px 0;
+}
+.activity__head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.activity__badge {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--accent); background: var(--accent-tint); padding: 3px 9px; border-radius: 99px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+.chip {
+  border: 1px solid var(--border); background: var(--surface);
+  border-radius: 99px; padding: 9px 15px; cursor: pointer; font-size: 14.5px;
+  color: var(--text); transition: transform .08s ease, background .15s ease;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.chip:hover { transform: translateY(-1px); }
+.chip[aria-pressed="true"] { background: var(--brand-tint); border-color: var(--brand); color: var(--brand-strong); }
+.chip.reveal-yes { background: var(--ok-tint); border-color: var(--ok); color: var(--text); }
+.chip.reveal-no  { background: var(--danger-tint); border-color: var(--danger); color: var(--text); }
+.chip .mark { font-weight: 800; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.activity__result { margin-top: 12px; font-size: 14.5px; }
+.activity__result ul { margin-top: 8px; }
+
+/* ---------------- How AI works: token prediction animation ---------------- */
+.predictor {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); padding: 18px; margin: 20px 0; box-shadow: var(--shadow-sm);
+}
+.predictor__sentence {
+  font-size: 18px; line-height: 1.9; min-height: 2em;
+}
+.tok { color: var(--text); }
+.tok--new {
+  background: var(--accent-tint); border-radius: 5px; padding: 1px 5px;
+  animation: pop .35s ease;
+}
+@keyframes pop { from { transform: scale(.7); opacity: 0; } to { transform: none; opacity: 1; } }
+.cursor { display: inline-block; width: 2px; height: 1.05em; background: var(--accent);
+  vertical-align: text-bottom; animation: blink 1s steps(2, start) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.candidates { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; min-height: 40px; }
+.cand {
+  border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px;
+  font-size: 13.5px; background: var(--surface-2); color: var(--text-soft);
+  display: flex; align-items: center; gap: 8px; opacity: .55; transition: all .3s ease;
+}
+.cand.is-picked { opacity: 1; border-color: var(--accent); background: var(--accent-tint); color: var(--text); font-weight: 600; }
+.cand .bar { height: 6px; border-radius: 99px; background: var(--accent); display: inline-block; }
+
+/* ---------------- Quiz / self-check ---------------- */
+.quiz {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); padding: 18px; margin: 20px 0; box-shadow: var(--shadow-sm);
+}
+.quiz__q { font-weight: 600; margin: 0 0 12px; }
+.opt { display: block; margin: 8px 0; }
+.opt input { position: absolute; opacity: 0; }
+.opt label {
+  display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 11px 14px; font-size: 15px; transition: background .15s ease, border-color .15s ease;
+}
+.opt label:hover { background: var(--surface-2); }
+.opt input:focus-visible + label { outline: 2px solid var(--brand); outline-offset: 2px; }
+.opt input:checked + label { border-color: var(--brand); background: var(--brand-tint); }
+.opt .dot {
+  width: 20px; height: 20px; flex: none; border-radius: 99px; border: 2px solid var(--border);
+  margin-top: 1px; display: grid; place-items: center; font-size: 12px; font-weight: 800;
+}
+.opt.correct label { border-color: var(--ok); background: var(--ok-tint); }
+.opt.correct .dot { border-color: var(--ok); background: var(--ok); color: #fff; }
+.opt.incorrect label { border-color: var(--danger); background: var(--danger-tint); }
+.opt.incorrect .dot { border-color: var(--danger); background: var(--danger); color: #fff; }
+.quiz__feedback { margin-top: 12px; font-size: 14.5px; display: none; }
+.quiz__feedback.show { display: block; }
+.quiz__feedback.ok  { color: var(--text); }
+
+/* ---------------- Spectrum activity (Support or offload? / Share, think or stop?) ---------------- */
+.spectrum { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-2); padding: 18px; margin: 20px 0; }
+.spectrum__legend { display: flex; gap: 8px; font-size: 12px; margin: 4px 0 14px; }
+.spectrum__legend span { flex: 1; text-align: center; padding: 4px; border-radius: 6px; background: var(--surface); border: 1px solid var(--border); }
+.spectrum__legend span:nth-child(1) { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, var(--border)); background: var(--ok-tint); }
+.spectrum__legend span:nth-child(2) { color: var(--suir-blue); border-color: color-mix(in srgb, var(--suir-blue) 45%, var(--border)); background: color-mix(in srgb, var(--suir-blue) 14%, var(--surface)); }
+.spectrum__legend span:nth-child(3) { color: var(--heather); border-color: color-mix(in srgb, var(--heather) 45%, var(--border)); background: color-mix(in srgb, var(--heather) 14%, var(--surface)); }
+.spectrum__legend span:nth-child(4) { color: var(--grass-green); border-color: color-mix(in srgb, var(--grass-green) 45%, var(--border)); background: color-mix(in srgb, var(--grass-green) 14%, var(--surface)); }
+.srow { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; margin: 8px 0; }
+.srow__task { font-size: 14.5px; font-weight: 600; margin-bottom: 8px; }
+.srow__opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.srow__opts button {
+  font-family: inherit; font-size: 12.5px; cursor: pointer; padding: 7px 6px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--text-soft); transition: all .12s ease;
+}
+.srow__opts button[data-v="0"] { border-color: color-mix(in srgb, var(--ok) 40%, var(--border)); background: color-mix(in srgb, var(--ok) 10%, var(--surface-2)); color: var(--ok); }
+.srow__opts button[data-v="0"]:hover { border-color: var(--ok); background: var(--ok-tint); }
+.srow__opts button[data-v="0"][aria-pressed="true"] { background: var(--ok-tint); border-color: var(--ok); color: var(--ok); font-weight: 600; box-shadow: inset 0 0 0 1px var(--ok); }
+.srow__opts button[data-v="1"] { border-color: color-mix(in srgb, var(--suir-blue) 40%, var(--border)); background: color-mix(in srgb, var(--suir-blue) 10%, var(--surface-2)); color: var(--suir-blue); }
+.srow__opts button[data-v="1"]:hover { border-color: var(--suir-blue); background: color-mix(in srgb, var(--suir-blue) 16%, var(--surface)); }
+.srow__opts button[data-v="1"][aria-pressed="true"] { background: color-mix(in srgb, var(--suir-blue) 22%, var(--surface)); border-color: var(--suir-blue); color: var(--suir-blue); font-weight: 600; box-shadow: inset 0 0 0 1px var(--suir-blue); }
+.srow__opts button[data-v="2"] { border-color: color-mix(in srgb, var(--heather) 40%, var(--border)); background: color-mix(in srgb, var(--heather) 10%, var(--surface-2)); color: var(--heather); }
+.srow__opts button[data-v="2"]:hover { border-color: var(--heather); background: color-mix(in srgb, var(--heather) 16%, var(--surface)); }
+.srow__opts button[data-v="2"][aria-pressed="true"] { background: color-mix(in srgb, var(--heather) 22%, var(--surface)); border-color: var(--heather); color: var(--heather); font-weight: 600; box-shadow: inset 0 0 0 1px var(--heather); }
+/* Risk ramp variant — used by this course's two three-option spectrums
+   ("Support or offload?" and "Share, think or stop?"), where the options
+   run from safe to unsafe rather than across neutral categories. Overrides
+   only the three data-v colours; everything else is the shared .srow__opts
+   styling above. Green (--ok, which tracks the course accent) -> Sunrise
+   Yellow -> Sunset Red. */
+.srow__opts--risk button[data-v="1"] { border-color: color-mix(in srgb, var(--warn) 40%, var(--border)); background: var(--warn-tint); color: var(--warn); }
+.srow__opts--risk button[data-v="1"]:hover { border-color: var(--warn); background: color-mix(in srgb, var(--warn) 16%, var(--surface)); }
+.srow__opts--risk button[data-v="1"][aria-pressed="true"] { background: color-mix(in srgb, var(--warn) 22%, var(--surface)); border-color: var(--warn); color: var(--warn); font-weight: 600; box-shadow: inset 0 0 0 1px var(--warn); }
+.srow__opts--risk button[data-v="2"] { border-color: color-mix(in srgb, var(--danger) 40%, var(--border)); background: var(--danger-tint); color: var(--danger); }
+.srow__opts--risk button[data-v="2"]:hover { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 16%, var(--surface)); }
+.srow__opts--risk button[data-v="2"][aria-pressed="true"] { background: color-mix(in srgb, var(--danger) 22%, var(--surface)); border-color: var(--danger); color: var(--danger); font-weight: 600; box-shadow: inset 0 0 0 1px var(--danger); }
+.srow__note { font-size: 13.5px; color: var(--text-soft); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); display: none; }
+.srow__note.show { display: block; }
+
+/* ---------------- Trust-check activity (Would you trust this?) ---------------- */
+.trust { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 18px; margin: 20px 0; box-shadow: var(--shadow-sm); }
+.trust__passage { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; font-size: 15px; line-height: 1.7; }
+.flag {
+  cursor: pointer; border-bottom: 2px dotted var(--text-mute); background: none;
+  transition: background .15s ease;
+}
+.flag:hover { background: var(--sunrise-yellow); }
+.flag.found { background: var(--warn-tint); border-bottom: 2px solid var(--warn); border-radius: 3px; padding: 0 2px; }
+.trust__tally { font-size: 14px; color: var(--text-mute); margin-top: 12px; }
+.trust__reveal { margin-top: 10px; font-size: 14.5px; display: none; }
+.trust__reveal.show { display: block; }
+.trust__reveal ul { margin-top: 8px; }
+
+/* ---------------- Five-step / numbered flow ---------------- */
+.steps { display: grid; gap: 12px; margin: 20px 0; counter-reset: step; }
+.step {
+  display: grid; grid-template-columns: 46px 1fr; gap: 16px; align-items: start;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px;
+  background: var(--surface); box-shadow: var(--shadow-sm);
+}
+.step__num {
+  counter-increment: step; width: 46px; height: 46px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--brand), var(--accent)); color: #fff;
+  display: grid; place-items: center; font-family: var(--font-head); font-weight: 700; font-size: 20px;
+}
+.step__num::before { content: counter(step); }
+.step h3 { margin: 2px 0 4px; font-size: 16px; }
+.step p { margin: 0 0 6px; font-size: 14.5px; }
+.step ul { margin: 4px 0 0; }
+.step li { font-size: 14px; margin: 3px 0; }
+
+/* ---------------- Role pathway (AI in Practice) ---------------- */
+.pathway { margin: 20px 0; }
+.pathway__tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.ptab {
+  font-family: inherit; font-size: 14px; cursor: pointer; padding: 9px 14px; border-radius: 99px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-soft);
+  display: inline-flex; align-items: center; gap: 7px; transition: all .12s ease;
+}
+.ptab:hover { border-color: var(--accent); }
+.ptab[aria-selected="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+.ppanel { display: none; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px; background: var(--surface); box-shadow: var(--shadow-sm); }
+.ppanel.is-active { display: block; animation: fade .3s ease; }
+.ppanel ul { margin: 8px 0 14px; }
+.case {
+  border-left: 4px solid var(--accent); background: var(--accent-tint);
+  border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 12px;
+}
+.case h4 { margin: 0 0 6px; font-family: var(--font-head); font-weight: 700; font-size: 15px; color: var(--brand-strong); }
+.case p { margin: 0 0 8px; font-size: 14.5px; }
+.case .qs { font-size: 14px; color: var(--text-soft); font-style: italic; }
+
+/* ---------------- Printable card (Your AI Decision Check) ---------------- */
+.checklist {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); padding: 18px; margin: 20px 0; box-shadow: var(--shadow-sm);
+}
+.checklist__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.checklist__badge {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--accent); background: var(--accent-tint); padding: 3px 9px; border-radius: 99px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.checklist__meta { display: flex; flex-wrap: wrap; gap: 6px 28px; font-size: 14px; color: var(--text-soft); margin-bottom: 16px; }
+.checklist__meta i { display: inline-block; min-width: 140px; border-bottom: 1px solid var(--border); font-style: normal; }
+.checklist__table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.checklist__table th, .checklist__table td { text-align: left; padding: 10px 12px; border: 1px solid var(--border); vertical-align: top; }
+.checklist__table thead th { background: var(--surface-2); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-mute); }
+.checklist__table tbody td:nth-child(2) { font-weight: 600; white-space: nowrap; }
+.checklist__ck { width: 40px; text-align: center !important; }
+.checklist__ck input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+/* Only rendered when the card is printed on its own — see the print block. */
+.checklist__logo, .checklist__foot { display: none; }
+@media (max-width: 620px) {
+  .checklist__table, .checklist__table thead, .checklist__table tbody, .checklist__table th, .checklist__table td, .checklist__table tr { display: block; }
+  .checklist__table thead tr { position: absolute; left: -9999px; }
+  .checklist__table tr { border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 10px; padding: 10px 12px; }
+  .checklist__table td { border: none; padding: 4px 0; }
+  .checklist__ck { text-align: left !important; }
+}
+
+/* ---------------- Reflection ---------------- */
+.reflect textarea {
+  width: 100%; min-height: 130px; resize: vertical; font-family: var(--font); font-size: 15.5px;
+  padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text); line-height: 1.5;
+}
+.reflect textarea:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; border-color: var(--brand); }
+.reflect__saved { font-size: 13px; color: var(--text-mute); margin-top: 8px; height: 1.2em; }
+
+/* ---------------- Buttons ---------------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  border: 1px solid transparent; border-radius: 10px; padding: 11px 18px;
+  font-size: 15px; font-weight: 600; font-family: inherit; text-decoration: none;
+  transition: transform .08s ease, background .15s ease, box-shadow .15s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn--primary { background: var(--brand); color: #fff; box-shadow: var(--shadow-sm); }
+.btn--primary:hover { background: var(--brand-strong); }
+.btn--ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
+.btn--ghost:hover { background: var(--surface-2); }
+.btn--accent { background: var(--accent); color: #fff; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ---------------- Footer nav ---------------- */
+.pager {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: saturate(1.4) blur(8px);
+  border-top: 1px solid var(--border);
+}
+.pager__inner {
+  max-width: 1120px; margin: 0 auto; padding: 12px 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.pager__spacer { flex: 1; }
+.pager__count { font-size: 13px; color: var(--text-mute); }
+@media (max-width: 480px){ .pager__count{ display: none; } }
+
+/* ---------------- Cover / completion ---------------- */
+.cover__hero {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #2c3742 0%, var(--brand) 52%, var(--accent) 100%);
+  color: #fff; border-radius: var(--radius); padding: 40px clamp(22px, 5vw, 48px);
+  box-shadow: var(--shadow); margin-bottom: 20px;
+}
+/* The SETU "U" crest, bled off the bottom-right corner — decorative, so it
+   sits behind the real content (all direct children get their own stacking
+   context) and is clipped by the hero's own border-radius via overflow:hidden. */
+.cover__hero > * { position: relative; z-index: 1; }
+.cover__hero::after {
+  content: ""; position: absolute; z-index: 0;
+  right: -70px; bottom: -90px; width: 340px; height: 424px;
+  background: url("../img/setu-symbol-white.png") no-repeat right bottom / contain;
+  opacity: .16; pointer-events: none;
+}
+@media (max-width: 640px) {
+  .cover__hero::after { width: 200px; height: 249px; right: -40px; bottom: -50px; }
+}
+.cover__hero h1 { color: #fff; }
+.cover__logo { height: 52px; width: auto; margin-bottom: 22px; display: block; }
+@media (max-width: 560px){ .cover__logo{ height: 40px; } }
+.cover__hero .eyebrow { color: rgba(255,255,255,.85); }
+.cover__hero .eyebrow .dot { background: rgba(255,255,255,.85); }
+.cover__hero h1 { font-size: clamp(28px, 5vw, 40px); margin: 0 0 8px; }
+.cover__hero p { color: rgba(255,255,255,.9); font-size: 18px; max-width: 52ch; }
+.cover__facts { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 22px; }
+.cover__facts div b { display: block; font-size: 22px; }
+.cover__facts div span { font-size: 13px; color: rgba(255,255,255,.8); }
+
+.outcomes { list-style: none; padding: 0; margin: 14px 0; display: grid; gap: 10px; }
+.outcomes li {
+  display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface);
+}
+.outcomes li .ck {
+  width: 24px; height: 24px; flex: none; border-radius: 99px; background: var(--accent-tint);
+  color: var(--accent); display: grid; place-items: center; font-weight: 800; margin-top: 1px;
+}
+
+.done-badge {
+  width: 88px; height: 88px; margin: 0 auto 8px; border-radius: 99px;
+  background: linear-gradient(135deg, var(--accent), var(--brand));
+  color: #fff; display: grid; place-items: center; font-size: 42px;
+  box-shadow: var(--shadow);
+}
+.center { text-align: center; }
+
+/* ---------------- Responsive: collapse sidebar ---------------- */
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  .menu-btn { display: inline-block; }
+  .toc {
+    position: fixed; inset: 0 0 0 auto; top: 0; height: 100dvh; width: min(320px, 82vw);
+    z-index: 60; border-radius: 0; overflow-y: auto;
+    transform: translateX(100%); transition: transform .28s ease;
+  }
+  .toc.is-open { transform: none; }
+  .toc-backdrop {
+    display: none; position: fixed; inset: 0; background: rgba(8,12,18,.45); z-index: 55;
+  }
+  .toc-backdrop.is-open { display: block; }
+}
+
+/* ---------------- Line icons (SVG sprite) ---------------- */
+.icon {
+  width: 1.05em; height: 1.05em; stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  vertical-align: -0.16em; flex: none;
+}
+.tile__icon, .flip-card__icon { color: var(--accent); line-height: 0; }
+.tile__icon .icon, .flip-card__icon .icon { width: 26px; height: 26px; stroke-width: 1.75; }
+.meta-row .icon { width: 15px; height: 15px; }
+.ptab .icon { width: 17px; height: 17px; }
+.ladder__row b { display: inline-flex; align-items: center; gap: 8px; }
+.ladder__row b .icon { width: 18px; height: 18px; color: var(--accent); }
+.btn .icon { width: 17px; height: 17px; }
+
+/* ---------------- Key message / takeaway callout ---------------- */
+/* Deliberately distinct from --key (green) and --setu, so it never clashes
+   with an adjacent box. Used consistently for every section's key message. */
+.callout--takeaway {
+  border: 1px solid color-mix(in srgb, var(--brand) 22%, var(--border));
+  border-left: 5px solid var(--sunrise-yellow);
+  background: var(--brand-tint);
+}
+.callout--takeaway .callout__title { color: var(--brand-strong); }
+.km-pill {
+  display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--brand-strong);
+  background: var(--sunrise-yellow); padding: 2px 8px; border-radius: 99px; margin-right: 8px;
+}
+.callout--takeaway ul { margin: 6px 0 0; }
+.callout--takeaway li { font-size: 15px; }
+
+/* ---------------- Flip cards ---------------- */
+.flip-card { perspective: 1000px; cursor: pointer; }
+.flip-card__inner {
+  display: grid; transition: transform .5s ease; transform-style: preserve-3d;
+}
+.flip-card[aria-expanded="true"] .flip-card__inner { transform: rotateY(180deg); }
+.flip-card__front, .flip-card__back {
+  grid-area: 1 / 1;                      /* stack faces; container sizes to the taller */
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 16px; box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
+}
+.flip-card__front { background: var(--surface); }
+.flip-card__back  { background: var(--brand-tint); transform: rotateY(180deg); }
+.flip-card__icon { font-size: 24px; margin-bottom: 8px; }
+.flip-card__front h3 { margin: 0; font-size: 15px; }
+.flip-card__front .flip-hint {
+  margin-top: auto; padding-top: 10px; font-size: 12px; color: var(--text-mute);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.flip-card__back h3 { margin: 0 0 4px; font-size: 15px; color: var(--brand-strong); }
+.flip-card__back p { margin: 0; font-size: 14px; color: var(--text-soft); }
+.flip-card:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: var(--radius-sm); }
+
+/* ---------------- Figure / image slot ---------------- */
+.figure { margin: 22px 0; }
+.figure img { width: 100%; height: auto; display: block; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+.figure__img {
+  cursor: zoom-in; position: relative; transition: opacity .15s ease, box-shadow .15s ease;
+}
+.figure__img:hover { box-shadow: var(--shadow); }
+.figure__img:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.figure__slot {
+  border: 1px dashed color-mix(in srgb, var(--brand) 40%, var(--border));
+  background: repeating-linear-gradient(-45deg, transparent, transparent 12px,
+              color-mix(in srgb, var(--brand-tint) 55%, transparent) 12px,
+              color-mix(in srgb, var(--brand-tint) 55%, transparent) 24px);
+  border-radius: var(--radius-sm); aspect-ratio: 16 / 9;
+  display: grid; place-content: center; place-items: center; gap: 6px; text-align: center;
+  color: var(--text-mute); padding: 20px;
+}
+.figure--banner .figure__slot { aspect-ratio: 3 / 1; }
+.figure--wide  .figure__slot { aspect-ratio: 21 / 9; }
+.figure__slot .placeholder__flag { margin: 0; }
+.figure__slot small { font-size: 12.5px; max-width: 46ch; }
+.figure figcaption { font-size: 13px; color: var(--text-mute); margin-top: 8px; text-align: center; }
+
+/* ---------------- Video embed (YouTube) ---------------- */
+.video { margin: 22px 0; }
+.video__frame {
+  position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-sm);
+  overflow: hidden; border: 1px solid var(--border); background: #000;
+}
+.video__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video__slot {
+  position: absolute; inset: 0; display: grid; place-content: center; gap: 8px;
+  text-align: center; color: #fff; padding: 20px;
+  background: linear-gradient(135deg, #2c3742, var(--brand) 60%, var(--accent));
+}
+.video__slot .placeholder__flag { margin: 0 auto; }
+.video figcaption { font-size: 13.5px; margin-top: 8px; }
+.video figcaption a { color: var(--info); font-weight: 600; }
+
+/* ---------------- Credits ---------------- */
+.credits { font-size: 12.5px; color: var(--text-mute); text-align: center; }
+.credits p { margin: 0; }
+
+/* ---------------- Certificate ---------------- */
+.certgen {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface-2); padding: 20px; margin: 22px 0; text-align: left;
+}
+.certgen h3 { margin: 0 0 6px; }
+.certgen__row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+.certgen input[type="text"] {
+  flex: 1 1 220px; min-width: 0; font-family: var(--font); font-size: 15.5px;
+  padding: 11px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text);
+}
+.certgen input:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; border-color: var(--brand); }
+.certgen__hint { font-size: 13px; color: var(--text-mute); margin-top: 8px; }
+
+/* The certificate document itself (screen preview + print). */
+.certificate {
+  display: none;
+  background: #fff; color: #1c2430;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: clamp(24px, 5vw, 56px); margin: 18px 0 0; box-shadow: var(--shadow);
+  text-align: center;
+}
+.certificate.is-preview { display: block; }
+.certificate__border {
+  border: 3px double var(--brand); border-radius: 8px;
+  padding: clamp(20px, 4vw, 40px);
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--accent-base) 10%, transparent), transparent 40%),
+    radial-gradient(circle at 0 100%, color-mix(in srgb, var(--brand) 8%, transparent), transparent 40%);
+}
+.certificate__logo { height: 54px; width: auto; margin: 0 auto 18px; display: block; }
+.certificate__kicker {
+  font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-base); font-weight: 700;
+}
+.certificate h2 {
+  font-family: var(--font-head); font-weight: 700; font-size: clamp(24px, 4vw, 34px);
+  color: var(--brand-strong); margin: 6px 0 18px;
+}
+.certificate__lead { font-size: 15px; color: #4a5568; margin: 0 0 6px; }
+.certificate__name {
+  font-family: var(--font-head); font-weight: 700; font-size: clamp(26px, 5vw, 38px);
+  color: var(--brand); margin: 8px 0; border-bottom: 2px solid color-mix(in srgb, var(--brand) 30%, transparent);
+  display: inline-block; padding: 0 24px 6px;
+}
+.certificate__course { font-size: 18px; font-weight: 600; margin: 14px 0 6px; color: #1c2430; }
+.certificate__meta { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-top: 26px; font-size: 13px; color: #4a5568; }
+.certificate__meta b { display: block; font-size: 15px; color: #1c2430; }
+
+/* ---------------- Image lightbox ---------------- */
+.lightbox {
+  position: fixed; inset: 0; z-index: 120;
+  display: grid; place-items: center; padding: clamp(16px, 5vw, 56px);
+}
+.lightbox[hidden] { display: none; }
+body.lightbox-open { overflow: hidden; }
+.lightbox__backdrop {
+  position: absolute; inset: 0; background: rgba(8,12,18,.78);
+}
+.lightbox__dialog {
+  position: relative; z-index: 1; max-width: min(1100px, 100%); max-height: 100%;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.lightbox__img {
+  display: block; max-width: 100%; max-height: calc(100vh - 140px);
+  width: auto; height: auto; border-radius: var(--radius-sm);
+  box-shadow: var(--shadow); background: var(--surface);
+}
+.lightbox__caption {
+  margin: 0; max-width: 70ch; text-align: center; font-size: 14px; color: #fff;
+}
+.lightbox__caption:empty { display: none; }
+.lightbox__close {
+  position: absolute; top: -44px; right: 0; width: 36px; height: 36px;
+  display: grid; place-items: center; border-radius: 99px; border: 0;
+  background: rgba(255,255,255,.12); color: #fff; cursor: pointer;
+}
+.lightbox__close:hover { background: rgba(255,255,255,.22); }
+.lightbox__close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.lightbox__close .icon { width: 20px; height: 20px; }
+@media (max-width: 640px) {
+  .lightbox__close { top: -40px; right: 0; }
+}
+
+/* ---------------- Focus visibility ---------------- */
+a:focus-visible, button:focus-visible, .chip:focus-visible {
+  outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 6px;
+}
+
+/* ---------------- Reduced motion ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* ---------------- Print ---------------- */
+@media print {
+  .topbar, .pager, .toc, .menu-btn, .lightbox { display: none !important; }
+  .section { display: block !important; }
+  .section__card { box-shadow: none; border: none; max-width: none; page-break-after: always; }
+  /* Flip cards: show both faces stacked so nothing is hidden on paper. */
+  .flip-card__inner { transform: none !important; display: block !important; }
+  .flip-card__front, .flip-card__back {
+    -webkit-backface-visibility: visible !important; backface-visibility: visible !important;
+    transform: none !important; grid-area: auto !important; margin-bottom: 6px;
+  }
+  /* Certificate-only print mode (triggered from the certificate download button). */
+  body.printing-cert .layout,
+  body.printing-cert .topbar,
+  body.printing-cert .pager { display: none !important; }
+  body.printing-cert .certificate { display: block !important; box-shadow: none; border: none; }
+  body.printing-cert { background: #fff; }
+
+  /* Card-only print mode (triggered from the "Download the card" button). The
+     card lives inside the active section rather than as a top-level sibling
+     like .certificate, so scope by the section's data-title instead of hiding
+     .layout wholesale. */
+  body.printing-checklist .topbar,
+  body.printing-checklist .toc,
+  body.printing-checklist .toc-backdrop,
+  body.printing-checklist .pager,
+  body.printing-checklist .menu-btn { display: none !important; }
+  /* Drop the sidebar grid track entirely, not just its content, so the
+     checklist gets the full page width instead of only the old "1fr" column. */
+  body.printing-checklist .layout { display: block !important; max-width: none !important; }
+  body.printing-checklist .section { display: none !important; }
+  body.printing-checklist .section[data-title="Your AI Decision Check"] { display: block !important; }
+  body.printing-checklist .section[data-title="Your AI Decision Check"] .section__card > * { display: none !important; }
+  body.printing-checklist .section[data-title="Your AI Decision Check"] #decision-card {
+    display: block !important; box-shadow: none; border: none;
+  }
+  body.printing-checklist #decision-card .btn-row { display: none !important; }
+  body.printing-checklist #decision-card .checklist__logo { display: block !important; height: 46px; width: auto; margin: 0 0 18px; }
+  body.printing-checklist #decision-card .checklist__foot { display: block !important; margin: 18px 0 0; font-size: 12px; color: var(--text-mute); }
+  body.printing-checklist .checklist__table { display: table !important; }
+  body.printing-checklist .checklist__table thead,
+  body.printing-checklist .checklist__table tbody,
+  body.printing-checklist .checklist__table tr { display: table-row-group; }
+  body.printing-checklist .checklist__table thead { display: table-header-group; }
+  body.printing-checklist .checklist__table tr { display: table-row; }
+  body.printing-checklist .checklist__table th,
+  body.printing-checklist .checklist__table td { display: table-cell; }
+  body.printing-checklist { background: #fff; }
+}
+@page { margin: 14mm; }
+
+/* ---------------- Confidence self-rating (Where are you now? / Reflection) ---------------- */
+.rating { display: grid; gap: 12px; margin: 18px 0; }
+.rating__row {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 12px 14px; box-shadow: var(--shadow-sm);
+}
+.rating__label { font-size: 14.5px; font-weight: 600; margin-bottom: 10px; }
+.rating__scale { display: flex; gap: 6px; }
+/* Each step is tinted along a red -> green proficiency gradient (SETU
+   secondary palette: Sunset Red -> Sunrise Yellow -> Grass Green) so the
+   scale reads at a glance, from "low confidence" to "high confidence". */
+.rating__scale button:nth-child(1) { --step: var(--sunset-red); }
+.rating__scale button:nth-child(2) { --step: color-mix(in srgb, var(--sunset-red), var(--sunrise-yellow)); }
+.rating__scale button:nth-child(3) { --step: var(--sunrise-yellow); }
+.rating__scale button:nth-child(4) { --step: color-mix(in srgb, var(--sunrise-yellow), var(--grass-green)); }
+.rating__scale button:nth-child(5) { --step: var(--grass-green); }
+.rating__scale button {
+  flex: 1; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+  padding: 8px 0; border-radius: 8px; border: 1px solid color-mix(in srgb, var(--step) 30%, var(--border));
+  background: color-mix(in srgb, var(--step) 16%, var(--surface-2)); color: var(--text-soft); transition: all .12s ease;
+}
+.rating__scale button:hover { border-color: var(--step); }
+.rating__scale button[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .rating__scale button { background: color-mix(in srgb, var(--step) 24%, var(--surface-2)); border-color: color-mix(in srgb, var(--step) 45%, var(--border)); }
+}
+:root[data-theme="dark"] .rating__scale button { background: color-mix(in srgb, var(--step) 24%, var(--surface-2)); border-color: color-mix(in srgb, var(--step) 45%, var(--border)); }
+.rating__compare { font-size: 13px; color: var(--accent); margin-top: 8px; font-weight: 600; }
+.rating__compare[hidden] { display: none; }
+.rating__hint { font-size: 12.5px; color: var(--text-mute); }

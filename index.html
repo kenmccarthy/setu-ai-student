@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI at SETU — Using GenAI to Support Your Learning | Student Course</title>
+  <meta name="description" content="A self-paced course for all SETU students on using Generative AI to support your learning — critically, responsibly and transparently." />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <!-- Applied before first paint so a saved theme choice doesn't flash the
+       wrong colours; safe no-op if nothing has been saved yet (falls back
+       to the prefers-color-scheme media query in styles.css). -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("setu-genai-theme");
+        if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <!-- ===================== ICON SPRITE (line icons) ===================== -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+    <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+    <symbol id="i-bar-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 4v17"/><path d="M7 21h10"/><path d="M3.5 8h17"/><path d="M3.5 8l-2 5a2.3 2.3 0 0 0 4 0z"/><path d="M20.5 8l-2 5a2.3 2.3 0 0 0 4 0z"/></symbol>
+    <symbol id="i-alert-triangle" viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+    <symbol id="i-alert-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/></symbol>
+    <symbol id="i-check-square" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+    <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+    <!-- Added for this course: wellbeing and environmental impact. -->
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== TOP BAR ===================== -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand-lockup">
+        <img class="brand-logo brand-logo--light" src="assets/img/setu-logo.png" alt="South East Technological University" />
+        <img class="brand-logo brand-logo--dark"  src="assets/img/setu-logo-white.png" alt="South East Technological University" />
+        <span class="brand-divider" aria-hidden="true"></span>
+        <div class="brand-text">
+          <b>AI at SETU</b>
+          <span>Student Course</span>
+        </div>
+      </div>
+      <div class="topbar__spacer"></div>
+      <div class="progress">
+        <span class="progress__label-long">Progress</span>
+        <div class="progress__track" role="progressbar" aria-label="Course progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress__fill" id="progressFill"></div>
+        </div>
+        <span id="progressPct">0%</span>
+      </div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Toggle light / dark mode">
+        <svg class="icon theme-toggle__sun" aria-hidden="true"><use href="#i-sun"/></svg>
+        <svg class="icon theme-toggle__moon" aria-hidden="true" hidden><use href="#i-moon"/></svg>
+      </button>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="toc">☰ Contents</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- ===================== TABLE OF CONTENTS ===================== -->
+    <div class="toc-backdrop" id="tocBackdrop"></div>
+    <nav class="toc" id="toc" aria-label="Course contents">
+      <h2>Contents</h2>
+      <ol id="tocList"><!-- populated by JS --></ol>
+
+      <!-- Cross-course navigation — inside the same box as the contents list,
+           so it's always exactly where the list ends with nothing else to
+           keep in sync. These three are SETU's staff GenAI programme; this
+           student course is the fourth course in the same family. -->
+      <nav class="course-links" aria-label="Other SETU AI courses">
+        <h2>SETU AI Courses</h2>
+        <a class="btn btn--literacy" href="https://setu.potential.ly/playlists/ai-literacy">AI Literacy</a>
+        <a class="btn btn--competency" href="https://setu.potential.ly/playlists/ai-competency">AI Competency</a>
+        <a class="btn btn--fluency" href="https://setu.potential.ly/playlists/ai-fluency">AI Fluency</a>
+      </nav>
+    </nav>
+
+    <!-- ===================== CONTENT ===================== -->
+    <main class="content" id="main">
+
+      <!-- ---------- 0. WELCOME / COVER ---------- -->
+      <section class="section is-active" data-title="Welcome" data-nav="Welcome">
+        <div class="cover__hero">
+          <img class="cover__logo" src="assets/img/setu-logo-white.png" alt="South East Technological University" />
+          <span class="eyebrow"><span class="dot"></span> AI at SETU · For all SETU students</span>
+          <h1>AI, Your Learning and You</h1>
+          <p>AI can support your learning. It shouldn't do your learning for you. This course is about learning to tell the difference.</p>
+          <div class="cover__facts">
+            <div><b>45–60</b><span>minutes, self-paced</span></div>
+            <div><b>11</b><span>short sections</span></div>
+            <div><b>18</b><span>activities and decisions</span></div>
+          </div>
+        </div>
+
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> Welcome · Start here</span>
+          <h1>Welcome to AI at SETU</h1>
+
+          <p class="lede">Artificial Intelligence is increasingly part of everyday life. You may already use AI when you search online, use social media, translate text, get recommendations, work with software — or interact directly with tools such as Microsoft Copilot, ChatGPT, Gemini or Claude.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~6 min</span><span><svg class="icon"><use href="#i-activity"/></svg> Includes an activity</span></div>
+          <hr class="rule" />
+
+          <figure class="figure figure--banner">
+            <div class="figure__slot">
+              <span class="placeholder__flag">Image to be supplied</span>
+              <small>Banner: SETU students working together — laptops, notes and conversation. Suggested 1600×540 (3:1).</small>
+            </div>
+          </figure>
+
+          <p>AI is also changing education and professional practice. During your time at SETU, you'll probably encounter AI in different ways across your programme.</p>
+          <ul>
+            <li>Sometimes you may be <strong>encouraged</strong> to use it.</li>
+            <li>Sometimes its use may be <strong>limited</strong>.</li>
+            <li>And there may be situations where you are expected to complete work <strong>independently</strong>, without Generative AI.</li>
+          </ul>
+
+          <p>But learning about AI isn't simply about knowing when you're allowed to use it. It's also about learning how to use it <em>well</em>.</p>
+          <p>SETU expects students to develop GenAI literacy and digital skills, and to approach AI critically, responsibly and transparently. Throughout this course, we'll explore how AI can support your learning without replacing the thinking and effort that help you develop.</p>
+
+          <div class="callout callout--key">
+            <p class="callout__title">Because ultimately</p>
+            <p><strong>AI can support your learning. It shouldn't do your learning for you.</strong></p>
+          </div>
+
+          <h2>What you'll be able to do</h2>
+          <ul class="outcomes">
+            <li><span class="ck">✓</span><span>Explain in simple terms what GenAI is, and why its outputs need to be critically evaluated.</span></li>
+            <li><span class="ck">✓</span><span>Identify productive ways of using GenAI to support your learning.</span></li>
+            <li><span class="ck">✓</span><span>Recognise cognitive offloading, and tell support apart from replacement of learning.</span></li>
+            <li><span class="ck">✓</span><span>Work more effectively with GenAI through questioning, exploration and review.</span></li>
+            <li><span class="ck">✓</span><span>Determine whether GenAI use is appropriate in an assessment.</span></li>
+            <li><span class="ck">✓</span><span>Use GenAI transparently and in accordance with your lecturers' instructions.</span></li>
+            <li><span class="ck">✓</span><span>Recognise key ethical, privacy, environmental, copyright, bias and wellbeing considerations.</span></li>
+            <li><span class="ck">✓</span><span>Know where to find SETU guidance and support.</span></li>
+          </ul>
+
+          <div class="activity" data-chipset id="activity-where-ai">
+            <div class="activity__head"><span class="activity__badge">Try it</span><strong>Where is AI already in your life?</strong></div>
+            <p style="font-size:15px">Which of these have you used? Select all that apply — there's no right answer here.</p>
+            <div class="chips">
+              <button class="chip" type="button" aria-pressed="false">AI chatbot</button>
+              <button class="chip" type="button" aria-pressed="false">Search engine</button>
+              <button class="chip" type="button" aria-pressed="false">Translation tool</button>
+              <button class="chip" type="button" aria-pressed="false">Writing assistant</button>
+              <button class="chip" type="button" aria-pressed="false">Image generator</button>
+              <button class="chip" type="button" aria-pressed="false">Recommendation system</button>
+              <button class="chip" type="button" aria-pressed="false">Study tool</button>
+              <button class="chip" type="button" aria-pressed="false">I'm not sure</button>
+            </div>
+            <p class="activity__result" data-chipset-tally></p>
+            <div class="btn-row"><button class="btn btn--accent" type="button" data-chipset-reveal="where-ai-reveal">Show me what that means</button></div>
+            <div class="callout callout--key" id="where-ai-reveal" hidden>
+              <p class="callout__title">You may be interacting with AI more often than you realise</p>
+              <p>AI isn't just a chatbot. It is increasingly built into the digital tools and services we use every day. Understanding how it works — and how to make good decisions about it — is becoming an important digital capability.</p>
+            </div>
+          </div>
+
+          <h2>Where are you now?</h2>
+          <p style="font-size:15px">Rate your confidence for each statement below, from 1 (not confident) to 5 (very confident). We'll come back to this at the end, so you can see what's changed.</p>
+          <div class="rating" data-rating="start">
+            <div class="rating__row" data-statement="explain-genai">
+              <div class="rating__label">I can explain in simple terms what GenAI is, and why its answers need checking.</div>
+              <div class="rating__scale" role="group" aria-label="Rate your confidence, 1 to 5"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+              <div class="rating__compare" hidden></div>
+            </div>
+            <div class="rating__row" data-statement="support-vs-replace">
+              <div class="rating__label">I can tell the difference between using AI to support my learning and using it to replace my learning.</div>
+              <div class="rating__scale" role="group" aria-label="Rate your confidence, 1 to 5"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+              <div class="rating__compare" hidden></div>
+            </div>
+            <div class="rating__row" data-statement="work-effectively">
+              <div class="rating__label">I can work with AI in a way that builds my understanding, not just my word count.</div>
+              <div class="rating__scale" role="group" aria-label="Rate your confidence, 1 to 5"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+              <div class="rating__compare" hidden></div>
+            </div>
+            <div class="rating__row" data-statement="assessment-rules">
+              <div class="rating__label">I know how to find out whether AI is allowed for a particular assessment — and how to declare it.</div>
+              <div class="rating__scale" role="group" aria-label="Rate your confidence, 1 to 5"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+              <div class="rating__compare" hidden></div>
+            </div>
+            <div class="rating__row" data-statement="wider-issues">
+              <div class="rating__label">I can weigh the wider issues — privacy, bias, copyright, environment and wellbeing — before I use AI.</div>
+              <div class="rating__scale" role="group" aria-label="Rate your confidence, 1 to 5"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+              <div class="rating__compare" hidden></div>
+            </div>
+            <div class="rating__hint">Your ratings stay on this device. You'll see how each one compares once you rate it again at the end.</div>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Key message</span>AI is part of your learning environment</p>
+            <p>Knowing how to use it critically and responsibly is part of being a SETU student.</p>
+          </div>
+
+          <div class="btn-row"><button class="btn btn--primary" data-goto="next">Start the course →</button></div>
+        </div>
+      </section>
+
+      <!-- ---------- 1. UNDERSTAND AI ---------- -->
+      <section class="section" data-title="Understand AI" data-nav="Understand AI">
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> Understand AI · What am I actually using?</span>
+          <h1>What am I actually using?</h1>
+          <p class="lede">Before we use AI, it helps to understand a little about what it is — and why an AI answer isn't automatically a verified answer.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~5 min</span><span><svg class="icon"><use href="#i-check-square"/></svg> Includes a decision</span></div>
+          <hr class="rule" />
+
+          <figure class="figure">
+            <div class="figure__slot">
+              <span class="placeholder__flag">Image to be supplied</span>
+              <small>Header illustration: what sits behind a chatbot's answer. Suggested 1200×675 (16:9).</small>
+            </div>
+          </figure>
+
+          <div class="ladder">
+            <div class="ladder__row">
+              <b><svg class="icon"><use href="#i-layers"/></svg> AI</b>
+              <span>Artificial Intelligence — a broad term for computer systems that perform tasks associated with human intelligence.</span>
+            </div>
+            <div class="ladder__row">
+              <b><svg class="icon"><use href="#i-sparkle"/></svg> GenAI</b>
+              <span>Generative AI — AI systems that generate new content: text, images, audio, video or code.</span>
+            </div>
+            <div class="ladder__row">
+              <b><svg class="icon"><use href="#i-message"/></svg> LLM</b>
+              <span>Large Language Model — what powers many text-based GenAI tools. Trained on enormous amounts of information, it identifies patterns in that data and generates text by predicting likely sequences of words, or parts of words.</span>
+            </div>
+            <div class="ladder__row">
+              <b><svg class="icon"><use href="#i-alert-triangle"/></svg> Hallucination</b>
+              <span>Information that sounds convincing but is inaccurate, misleading or completely fabricated. It is a normal consequence of how these systems work — not a rare glitch.</span>
+            </div>
+            <div class="ladder__row">
+              <b><svg class="icon"><use href="#i-scale"/></svg> Bias</b>
+              <span>AI can reproduce biases contained within its training data, or introduced through the way systems are developed.</span>
+            </div>
+            <div class="ladder__row">
+              <b><svg class="icon"><use href="#i-compass"/></svg> Agents</b>
+              <span>Rather than simply responding to one question, an AI agent can work towards a goal, use different tools and complete multiple connected tasks.</span>
+            </div>
+          </div>
+
+          <p>Because an LLM generates text by predicting what is <em>likely</em> to come next, a response isn't automatically a verified answer. AI capabilities are becoming increasingly sophisticated — but greater capability doesn't remove the need for human judgement.</p>
+
+          <div class="quiz" data-quiz data-answer="c">
+            <p class="quiz__q"><span class="activity__badge" style="margin-right:8px">Scenario</span> Would you trust it? You ask an AI tool for information for an assignment. It gives you a clear explanation and provides five academic references. The answer looks professional and confident. What should you do?</p>
+            <div class="opt"><input type="radio" name="q-trust" id="t-a" value="a"><label for="t-a"><span class="dot"></span> Use it — the references make the answer reliable.</label></div>
+            <div class="opt"><input type="radio" name="q-trust" id="t-b" value="b"><label for="t-b"><span class="dot"></span> Use the explanation but ignore the references.</label></div>
+            <div class="opt"><input type="radio" name="q-trust" id="t-c" value="c"><label for="t-c"><span class="dot"></span> Check the claims and locate the references independently.</label></div>
+            <div class="opt"><input type="radio" name="q-trust" id="t-d" value="d"><label for="t-d"><span class="dot"></span> Ask the AI whether it is confident that the answer is correct.</label></div>
+            <div class="quiz__feedback" data-feedback>
+              <p><strong>C is the best response.</strong> AI can generate false information — and even references that don't exist. Asking the same AI whether its answer is correct doesn't independently verify anything; it just generates more text.</p>
+              <p>Check important claims against reliable sources, and locate academic literature through appropriate academic databases and Library resources. SETU's guidelines specifically remind students that GenAI can produce convincing information that may be partly or completely false.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Key message</span>Confident isn't the same as correct</p>
+            <p>AI can sound confident without being correct. You remain responsible for checking what it produces.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 2. AI AS A LEARNING PARTNER ---------- -->
+      <section class="section" data-title="A Learning Partner" data-nav="A Learning Partner">
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> A Learning Partner · Can AI help me become a better learner?</span>
+          <h1>Can AI help me become a better learner?</h1>
+          <p class="lede">AI can be a genuinely useful learning support. The question is whether it is doing the thinking, or helping you do the thinking.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~8 min</span><span><svg class="icon"><use href="#i-activity"/></svg> Includes an activity</span><span><svg class="icon"><use href="#i-edit"/></svg> Write</span></div>
+          <hr class="rule" />
+
+          <figure class="figure">
+            <div class="figure__slot">
+              <span class="placeholder__flag">Image to be supplied</span>
+              <small>Header illustration: a student studying with AI as a support, not a substitute. Suggested 1200×675 (16:9).</small>
+            </div>
+          </figure>
+
+          <p>These kinds of uses are specifically recognised within the SETU Student Guidelines. You could ask AI to:</p>
+          <div class="grid grid--3">
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-book"/></svg></div><h3>Explain</h3><p>Explain a difficult concept in a different way.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-help"/></svg></div><h3>Practise</h3><p>Generate practice questions, or quiz you.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-file-text"/></svg></div><h3>Revise</h3><p>Create flashcards and help you organise your revision.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-compass"/></svg></div><h3>Study better</h3><p>Suggest study techniques that suit the material.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-search"/></svg></div><h3>Check</h3><p>Ask questions that test your understanding.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-message"/></svg></div><h3>Discuss</h3><p>Challenge an idea you've already had.</p></div>
+          </div>
+
+          <h2>An important distinction</h2>
+          <p>Consider these two interactions.</p>
+          <div class="grid grid--2">
+            <div class="tile" style="border-left:4px solid var(--danger)">
+              <h3>Example 1</h3>
+              <p style="font-style:italic">"Write a 500-word explanation of this concept for my assignment."</p>
+              <p style="margin-top:8px"><strong>The AI does most of the cognitive work.</strong></p>
+            </div>
+            <div class="tile" style="border-left:4px solid var(--ok)">
+              <h3>Example 2</h3>
+              <p style="font-style:italic">"I'm struggling to understand this concept. Explain it simply using an example. Then ask me three questions to check whether I've understood it. Don't give me the answers until I've tried."</p>
+              <p style="margin-top:8px"><strong>AI supports the student to do the thinking.</strong></p>
+            </div>
+          </div>
+
+          <h2>Cognitive offloading</h2>
+          <p>The SETU Student Guidelines use the term <strong>cognitive offloading</strong>. This means using AI to replace your own thinking, writing, critical judgement or reflection.</p>
+          <p>Sometimes learning is difficult. You might struggle with a reading. Find it difficult to construct an argument. Rewrite a paragraph several times. Get a problem wrong. Change your mind.</p>
+          <p>That effort can feel inefficient. But it's often where learning happens. If AI continually removes that effort, you may produce something more quickly while developing less understanding.</p>
+
+          <div class="callout callout--key">
+            <p class="callout__title">The goal isn't to avoid AI</p>
+            <p>It's to use AI in ways that increase your <strong>capability</strong> rather than your <strong>dependency</strong>.</p>
+          </div>
+
+          <div class="spectrum" id="spectrum-offload" data-spectrum>
+            <div class="activity__head"><span class="activity__badge">Activity</span><strong>Support or offload?</strong></div>
+            <p style="font-size:15px;margin:6px 0 4px">For each example, decide: is this supporting your learning, does it depend, or could it be replacing your learning? Choose, then read the discussion.</p>
+            <div>
+              <div class="srow" data-note="Supports learning. AI is helping you overcome a barrier while you remain engaged with the original material — you still go back and read the article.">
+                <div class="srow__task">A. You read an article but struggle with one concept. You ask AI for a simpler explanation, then return to the article.</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Supports learning</button><button data-v="1">It depends</button><button data-v="2">Could be offloading</button></div>
+                <div class="srow__note"></div>
+              </div>
+              <div class="srow" data-note="This could be cognitive offloading. If the purpose is to develop your ability to engage critically with academic literature, you've outsourced an important part of the learning.">
+                <div class="srow__task">B. You have six articles to read. You ask AI to summarise all six and don't read them yourself.</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Supports learning</button><button data-v="1">It depends</button><button data-v="2">Could be offloading</button></div>
+                <div class="srow__note"></div>
+              </div>
+              <div class="srow" data-note="This can be an excellent learning use — particularly if you answer before asking AI to reveal or explain the answer.">
+                <div class="srow__task">C. You ask AI to quiz you before an exam.</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Supports learning</button><button data-v="1">It depends</button><button data-v="2">Could be offloading</button></div>
+                <div class="srow__note"></div>
+              </div>
+              <div class="srow" data-note="Potentially very useful. You're bringing the argument, and using AI to stimulate further thinking. You still need to evaluate whether its criticism is valid.">
+                <div class="srow__task">D. You have an idea for your essay and ask AI to challenge it and identify weaknesses in your argument.</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Supports learning</button><button data-v="1">It depends</button><button data-v="2">Could be offloading</button></div>
+                <div class="srow__note"></div>
+              </div>
+              <div class="srow" data-note="The answer may be correct, but little learning has taken place. Next time, try solving it first and asking AI to check your working and explain where it went wrong.">
+                <div class="srow__task">E. You ask AI to solve a maths problem and copy the solution without understanding it.</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Supports learning</button><button data-v="1">It depends</button><button data-v="2">Could be offloading</button></div>
+                <div class="srow__note"></div>
+              </div>
+            </div>
+          </div>
+
+          <h2>Before you move on</h2>
+          <div class="reflect">
+            <textarea data-reflect="s2-understand-more" data-label="After using AI, do I understand more — or do I simply have more content?" placeholder="Think of the last time you used AI for something related to your studies. Did you understand more afterwards, or did you just have more content?"></textarea>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Key message</span>A better learner, not an easier task</p>
+            <p>Use AI to make yourself a better learner — not simply to make the task easier.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 3. WORKING EFFECTIVELY WITH AI ---------- -->
+      <section class="section" data-title="Working Effectively" data-nav="Working Effectively">
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> Working Effectively · Ask → Explore → Check → Learn</span>
+          <h1>Ask → Explore → Check → Learn</h1>
+          <p class="lede">Using AI effectively isn't about memorising complicated prompts. It's about a habit you can apply to any tool, including the ones that don't exist yet.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~6 min</span><span><svg class="icon"><use href="#i-edit"/></svg> Write</span></div>
+          <hr class="rule" />
+
+          <figure class="figure">
+            <div class="figure__slot">
+              <span class="placeholder__flag">Image to be supplied</span>
+              <small>Header illustration: the Ask → Explore → Check → Learn cycle as a visual device. Suggested 1200×675 (16:9).</small>
+            </div>
+          </figure>
+
+          <div class="steps">
+            <div class="step"><div class="step__num"></div><div>
+              <h3>Ask</h3>
+              <p>Explain what you're trying to achieve. Instead of <em>"Explain statistics."</em> try:</p>
+              <p style="font-style:italic;color:var(--text-soft)">"I'm a first-year student struggling to understand statistical significance. Explain it in simple language using an everyday example."</p>
+            </div></div>
+            <div class="step"><div class="step__num"></div><div>
+              <h3>Explore</h3>
+              <p>Don't assume the first response is the end of the conversation. Ask:</p>
+              <ul>
+                <li>"Can you explain that differently?"</li>
+                <li>"Give me another example."</li>
+                <li>"What are the limitations of that explanation?"</li>
+                <li>"Ask me a question to see whether I've understood."</li>
+              </ul>
+              <p style="margin-top:8px">AI becomes much more useful when you interact with it, rather than simply request an answer.</p>
+            </div></div>
+            <div class="step"><div class="step__num"></div><div>
+              <h3>Check</h3>
+              <p>Question what it gives you. Is it accurate? Is something missing? Could it be biased? Can you verify important information elsewhere?</p>
+            </div></div>
+            <div class="step"><div class="step__num"></div><div>
+              <h3>Learn</h3>
+              <p>Finally, ask yourself: <strong>what do I understand now that I didn't understand before?</strong> That's the most important step.</p>
+            </div></div>
+          </div>
+
+          <div class="activity" data-activity="prompt-rewrite">
+            <div class="activity__head"><span class="activity__badge">Try it</span><strong>Turn an answer prompt into a learning prompt</strong></div>
+            <p style="font-size:15px">Here's a weak prompt. Rewrite it so it's designed to produce <em>learning</em> rather than just content.</p>
+            <div class="callout" style="border-left-color:var(--danger)">
+              <p class="callout__title">The prompt</p>
+              <p style="font-style:italic">"Write about climate change."</p>
+            </div>
+            <div class="reflect">
+              <textarea data-reflect="s3-prompt-rewrite" data-label="My rewritten learning prompt (from 'Write about climate change.')" placeholder="My version…"></textarea>
+            </div>
+            <div class="btn-row"><button class="btn btn--accent" data-reveal-simple="prompt-rewrite-reveal">Reveal one possible version</button></div>
+            <div class="callout callout--key" id="prompt-rewrite-reveal" hidden>
+              <p class="callout__title">One possible version</p>
+              <p style="font-style:italic">"I'm trying to understand the main arguments around climate adaptation. Explain three different approaches in accessible language. Don't write an essay for me. Give me some questions I should investigate further, and then ask me to explain which approach I find most convincing and why."</p>
+              <p style="margin-top:10px">Which prompt is likely to produce more content? Probably both. Which is more deliberately designed to produce <strong>learning</strong>? The second.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Key message</span>Better understanding, not just a better answer</p>
+            <p>A good AI interaction shouldn't just produce a better answer. It should help you develop better understanding.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 4. AI AND YOUR ASSESSMENTS ---------- -->
+      <section class="section" data-title="Your Assessments" data-nav="Your Assessments">
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> Your Assessments · Can I use AI for this assignment?</span>
+          <h1>Can I use AI for this assignment?</h1>
+          <p class="lede">There's no single answer to this question. Different assessments are designed to assess different kinds of learning — so the appropriate use of AI can differ too.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~6 min</span><span><svg class="icon"><use href="#i-check-square"/></svg> Includes decisions</span></div>
+          <hr class="rule" />
+
+          <figure class="figure">
+            <div class="figure__slot">
+              <span class="placeholder__flag">Image to be supplied</span>
+              <small>Header illustration: a student checking assessment instructions before starting. Suggested 1200×675 (16:9).</small>
+            </div>
+          </figure>
+
+          <p>Your lecturer may:</p>
+          <div class="grid grid--3">
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-sparkle"/></svg></div><h3>Encourage or require</h3><p>AI use may be an explicit part of the assessment.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-scale"/></svg></div><h3>Permit in part</h3><p>Particular kinds of AI use may be allowed, and others not.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-lock"/></svg></div><h3>Restrict</h3><p>The assessment may require you to work without GenAI.</p></div>
+          </div>
+
+          <div class="callout callout--setu">
+            <p class="callout__title">The SETU Student Guidelines are clear</p>
+            <p>You must follow the guidance provided for your module and assessment.</p>
+          </div>
+
+          <h2>Why might AI be restricted?</h2>
+          <p>Imagine you're learning another language. There may be situations where using AI translation is useful. But if an assessment is specifically designed to establish whether <em>you</em> can translate the language, using AI to do the translation would prevent you from demonstrating that learning.</p>
+          <p>AI restrictions therefore aren't necessarily about believing that AI is bad. They may exist because there are particular capabilities that you need to demonstrate independently.</p>
+
+          <h2>Activity: Same student, different rules</h2>
+          <p style="font-size:15px">Aoife has three assessments this semester. The AI rules are different for each one.</p>
+
+          <div class="quiz" data-quiz data-answer="a">
+            <p class="quiz__q"><span class="activity__badge" style="margin-right:8px">Assessment 1</span> <em>"Use a GenAI tool to generate an initial response. Critically evaluate the response using academic evidence and document your AI use."</em><br />Can Aoife use AI?</p>
+            <div class="opt"><input type="radio" name="q-a1" id="a1-a" value="a"><label for="a1-a"><span class="dot"></span> Yes.</label></div>
+            <div class="opt"><input type="radio" name="q-a1" id="a1-b" value="b"><label for="a1-b"><span class="dot"></span> No.</label></div>
+            <div class="quiz__feedback" data-feedback>
+              <p><strong>Yes.</strong> It's explicitly part of the assessment — generating the response, then critically evaluating it, <em>is</em> the task. Note that documenting the AI use is part of it too.</p>
+            </div>
+          </div>
+
+          <div class="quiz" data-quiz data-answer="b">
+            <p class="quiz__q"><span class="activity__badge" style="margin-right:8px">Assessment 2</span> <em>"You may use GenAI to brainstorm and plan. AI-generated text must not be included in the submitted work. All AI use must be declared."</em><br />Which of these is Aoife allowed to do?</p>
+            <div class="opt"><input type="radio" name="q-a2" id="a2-a" value="a"><label for="a2-a"><span class="dot"></span> Ask AI to write the final submission.</label></div>
+            <div class="opt"><input type="radio" name="q-a2" id="a2-b" value="b"><label for="a2-b"><span class="dot"></span> Ask AI to suggest possible approaches, then write the submission herself and declare the use.</label></div>
+            <div class="opt"><input type="radio" name="q-a2" id="a2-c" value="c"><label for="a2-c"><span class="dot"></span> Both — the instruction permits GenAI.</label></div>
+            <div class="quiz__feedback" data-feedback>
+              <p><strong>B.</strong> She can ask AI to suggest possible approaches — that's brainstorming and planning. She cannot ask it to write the final submission, because AI-generated text must not appear in the work. And either way, the use must be declared.</p>
+            </div>
+          </div>
+
+          <div class="quiz" data-quiz data-answer="b">
+            <p class="quiz__q"><span class="activity__badge" style="margin-right:8px">Assessment 3</span> <em>"This assessment must be completed independently without the use of Generative AI."</em><br />Can Aoife use AI to improve the wording before submitting?</p>
+            <div class="opt"><input type="radio" name="q-a3" id="a3-a" value="a"><label for="a3-a"><span class="dot"></span> Yes — she wrote it herself, so polishing the wording is fine.</label></div>
+            <div class="opt"><input type="radio" name="q-a3" id="a3-b" value="b"><label for="a3-b"><span class="dot"></span> No — the assessment instruction restricts GenAI use.</label></div>
+            <div class="quiz__feedback" data-feedback>
+              <p><strong>No.</strong> "Without the use of Generative AI" covers improving the wording too, not only generating the ideas. If you're not sure how far a restriction extends, ask your lecturer rather than assuming.</p>
+            </div>
+          </div>
+
+          <div class="quiz" data-quiz data-answer="c">
+            <p class="quiz__q"><span class="activity__badge" style="margin-right:8px">Final question</span> What's the most reliable way to know what AI use is permitted?</p>
+            <div class="opt"><input type="radio" name="q-a4" id="a4-a" value="a"><label for="a4-a"><span class="dot"></span> Ask the AI tool whether your use is allowed.</label></div>
+            <div class="opt"><input type="radio" name="q-a4" id="a4-b" value="b"><label for="a4-b"><span class="dot"></span> Do what you did for your last assignment.</label></div>
+            <div class="opt"><input type="radio" name="q-a4" id="a4-c" value="c"><label for="a4-c"><span class="dot"></span> Check the assessment instructions, and ask your lecturer if you're unsure.</label></div>
+            <div class="opt"><input type="radio" name="q-a4" id="a4-d" value="d"><label for="a4-d"><span class="dot"></span> Ask a classmate on another programme.</label></div>
+            <div class="quiz__feedback" data-feedback>
+              <p><strong>C.</strong> The assessment instructions are the authority, and your lecturer can clarify anything that isn't clear. What was permitted in one module tells you nothing about another.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Key message</span>Different assessments, different rules</p>
+            <p>Always check before you use it.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 5. ACADEMIC INTEGRITY AND TRANSPARENCY ---------- -->
+      <section class="section" data-title="Integrity and Transparency" data-nav="Integrity &amp; Transparency">
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> Integrity and Transparency · Keep your work genuinely yours</span>
+          <h1>Keep your work genuinely yours</h1>
+          <p class="lede">Academic integrity is about honesty, trust and taking responsibility for your work. AI doesn't change those principles.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~5 min</span><span><svg class="icon"><use href="#i-check-square"/></svg> Includes decisions</span></div>
+          <hr class="rule" />
+
+          <figure class="figure">
+            <div class="figure__slot">
+              <span class="placeholder__flag">Image to be supplied</span>
+              <small>Header illustration: a student discussing their work with a lecturer. Suggested 1200×675 (16:9).</small>
+            </div>
+          </figure>
+
+          <p>If you use GenAI, be open and honest about that use. Depending on the assessment, you may be asked to:</p>
+          <ul>
+            <li>acknowledge or reference the AI tool;</li>
+            <li>provide your prompts;</li>
+            <li>retain AI-generated outputs;</li>
+            <li>complete a GenAI declaration;</li>
+            <li>retain versions showing how your work developed.</li>
+          </ul>
+
+          <p>SETU's guidelines also explain that lecturers may ask you to discuss or verify your submission, for example through an oral interview. The aim isn't to catch you out — you should be able to explain and stand over work that you submit as your own.</p>
+
+          <div class="quiz" data-quiz data-answer="b">
+            <p class="quiz__q"><span class="activity__badge" style="margin-right:8px">Scenario</span> Do I need to say anything? Your lecturer permits AI brainstorming but requires all GenAI use to be declared. You ask AI to suggest five approaches to the assignment. You don't copy any of its text. You eventually develop a completely different approach yourself. Do you declare the AI use?</p>
+            <div class="opt"><input type="radio" name="q-decl" id="d-a" value="a"><label for="d-a"><span class="dot"></span> No — the AI-generated text isn't in the assignment.</label></div>
+            <div class="opt"><input type="radio" name="q-decl" id="d-b" value="b"><label for="d-b"><span class="dot"></span> Yes — the assessment requires GenAI use to be declared.</label></div>
+            <div class="quiz__feedback" data-feedback>
+              <p><strong>B.</strong> Transparency isn't limited to copying AI-generated text. The requirement here is to declare <em>use</em>, and you used it. Follow the specific requirements for your assessment.</p>
+            </div>
+          </div>
+
+          <div class="quiz" data-quiz data-answer="d">
+            <p class="quiz__q"><span class="activity__badge" style="margin-right:8px">Scenario</span> You submit an assignment and are subsequently asked to discuss your argument with your lecturer. What would be most useful?</p>
+            <div class="opt"><input type="radio" name="q-viva" id="v-a" value="a"><label for="v-a"><span class="dot"></span> Being able to explain your argument and how it developed.</label></div>
+            <div class="opt"><input type="radio" name="q-viva" id="v-b" value="b"><label for="v-b"><span class="dot"></span> Having versions of your work.</label></div>
+            <div class="opt"><input type="radio" name="q-viva" id="v-c" value="c"><label for="v-c"><span class="dot"></span> Having records of relevant AI interactions where required.</label></div>
+            <div class="opt"><input type="radio" name="q-viva" id="v-d" value="d"><label for="v-d"><span class="dot"></span> All of the above.</label></div>
+            <div class="quiz__feedback" data-feedback>
+              <p><strong>D.</strong> Keeping evidence of your process can help demonstrate the development of your work and thinking. It is much easier to do this as you go than to reconstruct it afterwards.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Key message</span>Transparency protects you</p>
+            <p>Transparency protects your academic integrity. Don't hide your AI use.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 6. RESPONSIBLE AI ---------- -->
+      <section class="section" data-title="Responsible AI" data-nav="Responsible AI">
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> Responsible AI · Look beyond the answer</span>
+          <h1>AI has wider consequences</h1>
+          <p class="lede">Responsible AI use isn't only about whether an answer is accurate. AI technologies have wider ethical, social and environmental implications.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~7 min</span><span><svg class="icon"><use href="#i-activity"/></svg> Includes an activity</span><span><svg class="icon"><use href="#i-edit"/></svg> Write</span></div>
+          <hr class="rule" />
+
+          <figure class="figure">
+            <div class="figure__slot">
+              <span class="placeholder__flag">Image to be supplied</span>
+              <small>Header illustration: the wider consequences behind an AI answer — people, data, energy. Suggested 1200×675 (16:9).</small>
+            </div>
+          </figure>
+
+          <p>The SETU guidelines ask students to consider issues including environmental impact, bias, misinformation, human exploitation, copyright, authorship, ownership and data privacy. Let's consider some of them — each with the question worth asking.</p>
+
+          <div class="grid grid--3">
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-scale"/></svg></div><h3>Bias</h3><p>AI systems learn patterns from data. That data may contain existing biases, or underrepresent particular people, cultures, languages or perspectives.</p><p style="margin-top:8px;font-weight:600;color:var(--accent)">Whose perspective might be missing?</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-alert-triangle"/></svg></div><h3>Misinformation</h3><p>AI can generate inaccurate or fabricated information — fluently and confidently.</p><p style="margin-top:8px;font-weight:600;color:var(--accent)">How can I verify this?</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-file-text"/></svg></div><h3>Copyright &amp; ownership</h3><p>Think about the material you're putting <em>into</em> AI as well as the content you're getting out.</p><p style="margin-top:8px;font-weight:600;color:var(--accent)">Do I have the right to upload or use this?</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-users"/></svg></div><h3>People</h3><p>AI doesn't exist independently of people. Its development can raise questions about human labour, exploitation, inequality and who benefits.</p><p style="margin-top:8px;font-weight:600;color:var(--accent)">Who might be affected by this technology?</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-leaf"/></svg></div><h3>Environment</h3><p>The data centres and computing infrastructure that support AI consume energy and resources, and impact varies considerably between systems and activities.</p><p style="margin-top:8px;font-weight:600;color:var(--accent)">Is AI adding enough value here to justify using it?</p></div>
+          </div>
+
+          <p>None of this means you should never use AI. It means using it thoughtfully and proportionately.</p>
+
+          <div class="activity" data-activity="beyond-can-i">
+            <div class="activity__head"><span class="activity__badge">Activity</span><strong>Think beyond "Can I?"</strong></div>
+            <p style="font-size:15px">Four uses of AI. For each, ask <em>could you?</em> — then ask the harder question. Reveal each one when you've decided.</p>
+
+            <div class="btn-row"><button class="btn btn--ghost" data-reveal-simple="beyond-1">1. Generate 50 slightly different images until you find one you like</button></div>
+            <div class="callout" id="beyond-1" hidden><p><strong>Could you? Probably.</strong> Then: <em>do you need to?</em> Fifty generations is fifty times the resource cost of one. Would a clearer description have got you there in three?</p></div>
+
+            <div class="btn-row"><button class="btn btn--ghost" data-reveal-simple="beyond-2">2. Ask AI to create practice questions to help you understand a difficult topic</button></div>
+            <div class="callout" id="beyond-2" hidden><p><strong>Potential educational benefit may justify its use.</strong> You're still doing the learning; AI is generating the practice.</p></div>
+
+            <div class="btn-row"><button class="btn btn--ghost" data-reveal-simple="beyond-3">3. Upload a complete copyrighted textbook because you don't want to read it</button></div>
+            <div class="callout" id="beyond-3" hidden><p><strong>This raises copyright questions as well as cognitive offloading.</strong> Two separate problems in one action: whether you have the right to upload it, and whether you're skipping the reading that the module expects you to do.</p></div>
+
+            <div class="btn-row"><button class="btn btn--ghost" data-reveal-simple="beyond-4">4. Use AI translation to help access material you otherwise cannot understand</button></div>
+            <div class="callout" id="beyond-4" hidden><p><strong>Potential accessibility and learning benefits need to be part of the judgement.</strong> The same action can be entirely appropriate here and inappropriate in a language assessment designed to test your own translation.</p></div>
+
+            <div class="callout callout--key" style="margin-top:16px">
+              <p class="callout__title">The pattern</p>
+              <p>Responsible decision-making isn't always about a simple right or wrong answer. Consider <strong>purpose, benefit and impact</strong>.</p>
+            </div>
+          </div>
+
+          <div class="reflect">
+            <textarea data-reflect="s6-responsible" data-label="Which of these considerations (bias, misinformation, copyright, people, environment) had I thought least about — and what will I do differently?" placeholder="The one I'd thought least about…&#10;What I'll do differently…"></textarea>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Key message</span>Consider the consequences, not just the capability</p>
+            <p>Responsible AI means considering the consequences of your choices — not simply whether AI <em>can</em> perform the task.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 7. PROTECT YOURSELF AND OTHERS ---------- -->
+      <section class="section" data-title="Protect Yourself and Others" data-nav="Protect Yourself &amp; Others">
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> Protect Yourself and Others · Pause before you upload</span>
+          <h1>Pause before you upload</h1>
+          <p class="lede">AI conversations can feel private. Don't assume that they are.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~5 min</span><span><svg class="icon"><use href="#i-activity"/></svg> Includes an activity</span></div>
+          <hr class="rule" />
+
+          <figure class="figure">
+            <div class="figure__slot">
+              <span class="placeholder__flag">Image to be supplied</span>
+              <small>Header illustration: a moment of pause before uploading a file. Suggested 1200×675 (16:9).</small>
+            </div>
+          </figure>
+
+          <p>The SETU guidelines advise students never to share personal or sensitive information with a GenAI tool. Your interactions may be used to train a system, depending on the tool and its settings.</p>
+          <p>That applies to other people's information too. Don't upload someone's personal information, image or voice without appropriate permission. And don't use AI to record or transcribe lectures or meetings without prior consent.</p>
+
+          <div class="callout callout--info">
+            <p class="callout__title">Microsoft Copilot Chat at SETU</p>
+            <p>SETU students have access to Microsoft Copilot Chat through Office 365. When you're logged in with your SETU credentials, Enterprise Data Protection applies within the Microsoft digital infrastructure. But data protection is still your responsibility — being on a supported tool doesn't make everything safe to upload.</p>
+          </div>
+
+          <div class="spectrum" id="spectrum-share" data-spectrum>
+            <div class="activity__head"><span class="activity__badge">Activity</span><strong>Share, think first, or stop?</strong></div>
+            <p style="font-size:15px;margin:6px 0 4px">You're about to paste each of these into an AI tool. What's the right call?</p>
+            <div>
+              <div class="srow" data-note="Generally low risk — it's already public. Although it's still worth asking why you need to upload it, and whether a link would do.">
+                <div class="srow__task">A publicly available SETU webpage</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Share</button><button data-v="1">Think first</button><button data-v="2">Stop</button></div>
+                <div class="srow__note"></div>
+              </div>
+              <div class="srow" data-note="Stop. This is someone else's sensitive personal data, and it is not yours to share — with an AI tool or anyone else.">
+                <div class="srow__task">Your friend's medical information</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Share</button><button data-v="1">Think first</button><button data-v="2">Stop</button></div>
+                <div class="srow__note"></div>
+              </div>
+              <div class="srow" data-note="Stop. Your student number and personal details identify you, and you have no way to know where that information ends up.">
+                <div class="srow__task">Your student number and personal details</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Share</button><button data-v="1">Think first</button><button data-v="2">Stop</button></div>
+                <div class="srow__note"></div>
+              </div>
+              <div class="srow" data-note="Stop, unless you have prior consent for the recording and for this use. A recorded class contains other people — your lecturer and your classmates.">
+                <div class="srow__task">A lecturer's recorded class</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Share</button><button data-v="1">Think first</button><button data-v="2">Stop</button></div>
+                <div class="srow__note"></div>
+              </div>
+              <div class="srow" data-note="Potentially appropriate — but still consider the tool you're using and the purpose. Check there's nothing personal or confidential buried in the notes.">
+                <div class="srow__task">Your own notes, with no personal or confidential information</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Share</button><button data-v="1">Think first</button><button data-v="2">Stop</button></div>
+                <div class="srow__note"></div>
+              </div>
+              <div class="srow" data-note="Stop, unless its use has been specifically authorised within the appropriate research and data-governance arrangements. If you're on a research project, ask your supervisor first.">
+                <div class="srow__task">Confidential data from a research project</div>
+                <div class="srow__opts srow__opts--risk"><button data-v="0">Share</button><button data-v="1">Think first</button><button data-v="2">Stop</button></div>
+                <div class="srow__note"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Key message</span>Before you upload, ask two questions</p>
+            <p>Do I have the right to share this — and would I be comfortable if it didn't remain private?</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 8. AI AND YOUR WELLBEING ---------- -->
+      <section class="section" data-title="Your Wellbeing" data-nav="Your Wellbeing">
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> Your Wellbeing · AI can sound human</span>
+          <h1>AI can sound human. It isn't human support.</h1>
+          <p class="lede">AI chatbots are designed to hold conversations. They can respond in language that sounds supportive, understanding and empathetic. That can make interactions feel personal.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~4 min</span><span><svg class="icon"><use href="#i-check-square"/></svg> Includes a decision</span></div>
+          <hr class="rule" />
+
+          <figure class="figure">
+            <div class="figure__slot">
+              <span class="placeholder__flag">Image to be supplied</span>
+              <small>Header illustration: a student talking with another person — human support. Suggested 1200×675 (16:9).</small>
+            </div>
+          </figure>
+
+          <p>But AI doesn't experience empathy, or understand you in the way another person does.</p>
+          <p>The SETU Student Guidelines specifically caution against relying exclusively on GenAI for emotional or psychological support. They also highlight concerns about the privacy of personal mental-health information — some of the most sensitive information about you there is.</p>
+          <p>If you're struggling, appropriate human support matters.</p>
+
+          <div class="quiz" data-quiz data-answer="c">
+            <p class="quiz__q"><span class="activity__badge" style="margin-right:8px">Scenario</span> You've been discussing a personal problem with an AI chatbot. Its responses feel understanding and helpful. Which statement is most important to remember?</p>
+            <div class="opt"><input type="radio" name="q-well" id="w-a" value="a"><label for="w-a"><span class="dot"></span> If it sounds empathetic, it understands how I feel.</label></div>
+            <div class="opt"><input type="radio" name="q-well" id="w-b" value="b"><label for="w-b"><span class="dot"></span> AI can be useful for conversation, so professional support isn't necessary.</label></div>
+            <div class="opt"><input type="radio" name="q-well" id="w-c" value="c"><label for="w-c"><span class="dot"></span> AI-generated empathy isn't the same as human understanding or professional support, and sharing sensitive personal information raises privacy concerns.</label></div>
+            <div class="quiz__feedback" data-feedback>
+              <p><strong>C.</strong> A response that sounds understanding is a response shaped to sound understanding. That isn't the same as being understood — and the conversation itself carries a privacy cost.</p>
+            </div>
+          </div>
+
+          <h2>Support available at SETU</h2>
+          <p style="font-size:15px">SETU provides support through services including:</p>
+          <div class="grid grid--3">
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-users"/></svg></div><h3>Your Class Tutor</h3><p>Usually the first person to talk to about how your studies are going.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-help"/></svg></div><h3>Student Services</h3><p>Practical and personal support across your time at SETU.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-heart"/></svg></div><h3>Counselling Service</h3><p>Confidential professional support.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-message"/></svg></div><h3>Students' Union</h3><p>Student-led advice and representation.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-cap"/></svg></div><h3>Centre for Academic Practice</h3><p>Guidance on learning, academic skills and GenAI.</p></div>
+            <div class="tile"><div class="tile__icon"><svg class="icon"><use href="#i-briefcase"/></svg></div><h3>IT Services</h3><p>Help with your SETU account and the tools available to you.</p></div>
+          </div>
+          <div class="placeholder">
+            <span class="placeholder__flag">SETU to complete</span>
+            <p>Add the current contact details or links for each service above, so students can act on this page directly.</p>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Key message</span>Simulated empathy isn't support</p>
+            <p>AI can simulate conversation and empathy. It isn't a replacement for appropriate human support.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 9. YOUR AI DECISION CHECK ---------- -->
+      <section class="section" data-title="Your AI Decision Check" data-nav="Your AI Decision Check">
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> Your AI Decision Check · Five questions</span>
+          <h1>Before you use AI: 5 questions</h1>
+          <p class="lede">Everything in this course comes down to five questions. Keep them on your phone, or print the card below.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~7 min</span><span><svg class="icon"><use href="#i-download"/></svg> Downloadable card</span><span><svg class="icon"><use href="#i-activity"/></svg> Final challenge</span></div>
+          <hr class="rule" />
+
+          <!-- The card itself — printable on its own via the button below
+               (see the printing-checklist rules in styles.css). -->
+          <div class="checklist" id="decision-card">
+            <!-- Logo and footer show only when the card is printed on its own —
+                 on screen the SETU lockup is already in the top bar. -->
+            <img class="checklist__logo" src="assets/img/setu-logo.png" alt="South East Technological University" />
+            <div class="checklist__head"><span class="checklist__badge">Keep this</span><strong>Before You Use AI: 5 Questions</strong></div>
+            <div class="checklist__meta">
+              <span>Module / assessment: <i></i></span>
+              <span>Date: <i></i></span>
+            </div>
+            <table class="checklist__table">
+              <thead>
+                <tr><th scope="col" class="checklist__ck"><span class="sr-only">Checked</span></th><th scope="col">Question</th><th scope="col">Ask yourself</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="checklist__ck"><input type="checkbox" id="chk-learning" /><label for="chk-learning"><span class="sr-only">Learning considered</span></label></td><td>1. Learning</td><td>Is AI supporting my learning — or replacing it?</td></tr>
+                <tr><td class="checklist__ck"><input type="checkbox" id="chk-permission" /><label for="chk-permission"><span class="sr-only">Permission considered</span></label></td><td>2. Permission</td><td>Is this use allowed for this assessment?</td></tr>
+                <tr><td class="checklist__ck"><input type="checkbox" id="chk-trust" /><label for="chk-trust"><span class="sr-only">Trust considered</span></label></td><td>3. Trust</td><td>Have I critically checked the output?</td></tr>
+                <tr><td class="checklist__ck"><input type="checkbox" id="chk-transparency" /><label for="chk-transparency"><span class="sr-only">Transparency considered</span></label></td><td>4. Transparency</td><td>Have I acknowledged my AI use where required?</td></tr>
+                <tr><td class="checklist__ck"><input type="checkbox" id="chk-responsibility" /><label for="chk-responsibility"><span class="sr-only">Responsibility considered</span></label></td><td>5. Responsibility</td><td>Have I considered privacy, people, bias, copyright, wellbeing and environmental impact?</td></tr>
+              </tbody>
+            </table>
+            <div class="btn-row" style="margin-top:14px">
+              <button class="btn btn--accent" id="cardPrintBtn" type="button"><svg class="icon"><use href="#i-download"/></svg> Download the card (print / save as PDF)</button>
+            </div>
+            <p class="checklist__foot">AI at SETU · Using GenAI to Support Your Learning — Centre for Academic Practice</p>
+          </div>
+
+          <h2>Final challenge: work through the five questions</h2>
+          <div class="activity" data-activity="final-challenge">
+            <div class="activity__head"><span class="activity__badge">Scenario</span><strong>An assignment due next week</strong></div>
+            <p style="font-size:15px">You're struggling with one of the core concepts, so you ask AI to explain it using an example. You then ask AI to:</p>
+            <ul style="font-size:15px">
+              <li>suggest different perspectives you might investigate;</li>
+              <li>generate possible search terms;</li>
+              <li>quiz you to check your understanding;</li>
+              <li>give feedback on an outline you have written.</li>
+            </ul>
+            <p style="font-size:15px">You locate and read the academic literature yourself. You develop your own argument. You write the assignment yourself. <strong>Your lecturer permits AI as a learning support but requires any use to be declared.</strong></p>
+            <p style="font-size:15px;font-weight:600;margin-top:14px">Decide your answer to each question, then reveal the discussion.</p>
+
+            <div class="btn-row"><button class="btn btn--ghost" data-reveal-simple="fc-1">1. Learning — is AI supporting or replacing your learning?</button></div>
+            <div class="callout" id="fc-1" hidden><p><strong>Primarily supporting.</strong> You're continuing to read, evaluate, think and write. AI removed a barrier and generated practice; it didn't do the work.</p></div>
+
+            <div class="btn-row"><button class="btn btn--ghost" data-reveal-simple="fc-2">2. Permission — is the use permitted?</button></div>
+            <div class="callout" id="fc-2" hidden><p><strong>Yes</strong>, according to this assessment scenario. AI is permitted as a learning support.</p></div>
+
+            <div class="btn-row"><button class="btn btn--ghost" data-reveal-simple="fc-3">3. Trust — should you assume the AI explanations and suggestions are correct?</button></div>
+            <div class="callout" id="fc-3" hidden><p><strong>No.</strong> Important information still needs to be critically evaluated and verified — including the explanation of the concept you were struggling with, and any search terms or perspectives it suggested.</p></div>
+
+            <div class="btn-row"><button class="btn btn--ghost" data-reveal-simple="fc-4">4. Transparency — do you need to disclose the use even though you wrote the assignment yourself?</button></div>
+            <div class="callout" id="fc-4" hidden><p><strong>Yes.</strong> The lecturer requires AI use to be declared. Writing it yourself doesn't remove the requirement to declare the use.</p></div>
+
+            <div class="btn-row"><button class="btn btn--ghost" data-reveal-simple="fc-5">5. Responsibility — is there anything else to consider?</button></div>
+            <div class="callout" id="fc-5" hidden><p><strong>Yes.</strong> Consider what information you're sharing, copyright, bias and misinformation, privacy, environmental proportionality, and the wider consequences of your use.</p></div>
+          </div>
+
+          <div class="activity" data-activity="change-one-thing">
+            <div class="activity__head"><span class="activity__badge">Now change one thing</span><strong>Same activity, different instruction</strong></div>
+            <div class="callout" style="border-left-color:var(--danger)">
+              <p class="callout__title">The new instruction</p>
+              <p>Your lecturer specifies that <strong>Generative AI must not be used</strong> for this assessment.</p>
+            </div>
+            <p style="font-size:15px;font-weight:600">Does your decision change?</p>
+            <div class="btn-row"><button class="btn btn--accent" data-reveal-simple="change-reveal">Reveal</button></div>
+            <div class="callout callout--key" id="change-reveal" hidden>
+              <p class="callout__title">Yes</p>
+              <p>Nothing about the AI use itself changed — it was still explaining, quizzing and giving feedback. What changed was the context. The same AI activity can be appropriate in one learning context and inappropriate in another. That's why responsible AI use requires judgement and attention to context.</p>
+            </div>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Key message</span>Judgement, not memorised rules</p>
+            <p>Responsible AI use isn't about memorising one set of rules. It's about learning to make good decisions.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 10. FINISH ---------- -->
+      <section class="section" data-title="Keep Your Thinking in the Loop" data-nav="Keep Thinking">
+        <div class="section__card">
+          <span class="eyebrow"><span class="dot"></span> Finish · Keep your thinking in the loop</span>
+          <h1>Keep your thinking in the loop</h1>
+          <p class="lede">You've reached the end of this course. AI will continue to change during your time at SETU. The tools you use today may not be the tools you use when you graduate.</p>
+          <div class="meta-row"><span><svg class="icon"><use href="#i-clock"/></svg> ~5 min</span><span><svg class="icon"><use href="#i-edit"/></svg> Write</span></div>
+          <hr class="rule" />
+
+          <figure class="figure">
+            <div class="figure__slot">
+              <span class="placeholder__flag">Image to be supplied</span>
+              <small>Closing image: a student looking ahead — graduation, work, what comes next. Suggested 1200×675 (16:9).</small>
+            </div>
+          </figure>
+
+          <p>That's why the most important capability isn't learning how to use one particular AI system. It's learning how to approach AI critically, confidently and responsibly.</p>
+          <ul>
+            <li>Use AI to <strong>ask questions</strong>.</li>
+            <li>Use it to <strong>explore</strong>.</li>
+            <li>Use it to <strong>practise</strong>.</li>
+            <li>Use it to <strong>challenge your thinking</strong>.</li>
+          </ul>
+          <p>But don't give away the thinking that helps you learn.</p>
+
+          <div class="callout callout--key">
+            <p class="callout__title">What matters</p>
+            <p>Your ideas matter. Your creativity matters. Your judgement matters. And the expertise you're developing matters. <strong>AI can support your learning. You remain the learner.</strong></p>
+          </div>
+
+          <h2>Rate yourself again</h2>
+          <div class="rating" data-rating="end">
+            <div class="rating__row" data-statement="explain-genai">
+              <div class="rating__label">I can explain in simple terms what GenAI is, and why its answers need checking.</div>
+              <div class="rating__scale" role="group" aria-label="Rate your confidence, 1 to 5"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+              <div class="rating__compare" hidden></div>
+            </div>
+            <div class="rating__row" data-statement="support-vs-replace">
+              <div class="rating__label">I can tell the difference between using AI to support my learning and using it to replace my learning.</div>
+              <div class="rating__scale" role="group" aria-label="Rate your confidence, 1 to 5"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+              <div class="rating__compare" hidden></div>
+            </div>
+            <div class="rating__row" data-statement="work-effectively">
+              <div class="rating__label">I can work with AI in a way that builds my understanding, not just my word count.</div>
+              <div class="rating__scale" role="group" aria-label="Rate your confidence, 1 to 5"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+              <div class="rating__compare" hidden></div>
+            </div>
+            <div class="rating__row" data-statement="assessment-rules">
+              <div class="rating__label">I know how to find out whether AI is allowed for a particular assessment — and how to declare it.</div>
+              <div class="rating__scale" role="group" aria-label="Rate your confidence, 1 to 5"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+              <div class="rating__compare" hidden></div>
+            </div>
+            <div class="rating__row" data-statement="wider-issues">
+              <div class="rating__label">I can weigh the wider issues — privacy, bias, copyright, environment and wellbeing — before I use AI.</div>
+              <div class="rating__scale" role="group" aria-label="Rate your confidence, 1 to 5"><button type="button" data-v="1">1</button><button type="button" data-v="2">2</button><button type="button" data-v="3">3</button><button type="button" data-v="4">4</button><button type="button" data-v="5">5</button></div>
+              <div class="rating__compare" hidden></div>
+            </div>
+            <div class="rating__hint">If you rated yourself at the start, you'll see how each answer compares once you rate it again.</div>
+          </div>
+
+          <h2>Final reflection</h2>
+          <p style="font-size:15px">Before you leave, complete these three statements. You can download everything you've written in this course as a single file.</p>
+          <div class="reflect">
+            <textarea data-reflect="s10-support" data-label="One way I could use AI to support my learning is…" placeholder="One way I could use AI to support my learning is…"></textarea>
+            <textarea data-reflect="s10-careful" data-label="One thing I need to be careful about is…" placeholder="One thing I need to be careful about is…"></textarea>
+            <textarea data-reflect="s10-assessment" data-label="Before I use AI for an assessment, I will…" placeholder="Before I use AI for an assessment, I will…"></textarea>
+          </div>
+
+          <div class="reflect__saved" id="reflectSaved"></div>
+          <div class="btn-row">
+            <button class="btn btn--ghost" id="reflectDownload"><svg class="icon"><use href="#i-download"/></svg> Download my notes</button>
+            <button class="btn btn--ghost" id="reflectClear">Clear</button>
+          </div>
+
+          <h2>Where to go next</h2>
+          <p>The GenAI hubs on Blackboard and Moodle bring together the resources referenced throughout this course, including:</p>
+          <ul>
+            <li>GenAI learning materials and information on the tools available to you;</li>
+            <li>the Academic Integrity course;</li>
+            <li>Library guidance on referencing and prompt literacy;</li>
+            <li>academic writing and mathematics support;</li>
+            <li>wellbeing supports;</li>
+            <li>and ongoing updates as guidance develops.</li>
+          </ul>
+          <div class="placeholder">
+            <span class="placeholder__flag">SETU to complete</span>
+            <p>Add direct links to the Blackboard and Moodle GenAI hubs, and to the SETU Student Guidelines for the Use of Generative AI, so students can go straight there from this page.</p>
+          </div>
+
+          <div class="callout callout--takeaway">
+            <p class="callout__title"><span class="km-pill">Final key message</span></p>
+            <ul style="margin-bottom:0">
+              <li>Use AI to support your learning — not to replace it.</li>
+              <li>Ask. Explore. Check. Learn.</li>
+              <li>Keep your thinking in the loop.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- COMPLETE ---------- -->
+      <section class="section" data-title="You're done" data-nav="Finish">
+        <div class="section__card center">
+          <div class="done-badge">✓</div>
+          <span class="eyebrow" style="justify-content:center"><span class="dot"></span> Course complete</span>
+          <h1>Well done.</h1>
+          <p class="lede">You've completed <strong>AI at SETU: Using GenAI to Support Your Learning</strong>. You've looked at what GenAI actually is, told support apart from offloading, practised asking better questions, worked out how to check whether AI is allowed for an assessment, and weighed privacy, bias, copyright, wellbeing and environmental impact.</p>
+          <hr class="rule" />
+
+          <!-- Certificate of completion -->
+          <div class="certgen" id="certgen">
+            <h3>Download your certificate of completion</h3>
+            <p style="margin:0;font-size:14.5px;color:var(--text-soft)">Enter your name as you'd like it to appear, then preview or download your certificate (save as PDF, or print).</p>
+            <div class="certgen__row">
+              <input type="text" id="certName" placeholder="Your full name" autocomplete="name" aria-label="Your name for the certificate" />
+              <button class="btn btn--ghost" id="certPreviewBtn" type="button">Preview</button>
+              <button class="btn btn--primary" id="certDownloadBtn" type="button"><svg class="icon"><use href="#i-download"/></svg> Download certificate</button>
+            </div>
+            <p class="certgen__hint" id="certHint">Your name stays on this device — it is only used to generate the certificate.</p>
+          </div>
+
+          <div class="callout callout--info" style="text-align:left">
+            <p class="callout__title">Take one thing with you</p>
+            <p>The five-question decision check. Before you use AI: <strong>Learning. Permission. Trust. Transparency. Responsibility.</strong> If you print one page from this course, print that card.</p>
+          </div>
+          <div class="btn-row" style="justify-content:center">
+            <button class="btn btn--ghost" data-goto="9"><svg class="icon"><use href="#i-arrow-left"/></svg> Back to the card</button>
+            <button class="btn btn--ghost" data-goto="0">Back to the start</button>
+          </div>
+
+          <hr class="rule" />
+          <div class="credits">
+            <p>Developed by the Centre for Academic Practice, based on a course development script created by Dr Hazel Farrell. The course was built using Claude Code.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===================== PAGER ===================== -->
+  <div class="pager">
+    <div class="pager__inner">
+      <button class="btn btn--ghost" id="prevBtn">← Previous</button>
+      <div class="pager__spacer"></div>
+      <span class="pager__count" id="pagerCount"></span>
+      <div class="pager__spacer"></div>
+      <button class="btn btn--primary" id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <!-- Certificate document — lives at body level so it can be printed on its own -->
+  <div class="certificate" id="certificate" aria-hidden="true">
+    <div class="certificate__border">
+      <img class="certificate__logo" src="assets/img/setu-logo.png" alt="South East Technological University" />
+      <div class="certificate__kicker">Certificate of Completion</div>
+      <h2>AI at SETU</h2>
+      <p class="certificate__lead">This is to certify that</p>
+      <div class="certificate__name" id="certNameOut">Your Name</div>
+      <p class="certificate__course">has successfully completed<br><strong>AI at SETU: Using GenAI to Support Your Learning</strong></p>
+      <div class="certificate__meta">
+        <div><span>Date</span><b id="certDate">—</b></div>
+        <div><span>Course</span><b>SETU Student Course</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image lightbox — lives at body level, populated on demand -->
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox__backdrop" data-lightbox-close></div>
+    <div class="lightbox__dialog" role="dialog" aria-modal="true" aria-labelledby="lightboxCaption">
+      <button type="button" class="lightbox__close" data-lightbox-close aria-label="Close image">
+        <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+      </button>
+      <img class="lightbox__img" id="lightboxImg" src="" alt="" />
+      <p class="lightbox__caption" id="lightboxCaption"></p>
+    </div>
+  </div>
+
+  <script src="assets/js/scorm.js"></script>
+  <script src="assets/js/course.js"></script>
+  <script src="assets/js/certificate.js"></script>
+</body>
+</html>
