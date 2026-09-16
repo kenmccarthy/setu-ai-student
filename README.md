@@ -91,6 +91,9 @@ component:
     discussion note per row.
   - **Progressive-reveal activities** — "Think beyond *Can I?*", the five-question final
     challenge, "Now change one thing", and the prompt-rewrite exercise.
+  - **Flip cards** for the five responsible-AI considerations (bias, misinformation,
+    copyright, people, environment) — the consideration on the front, why it matters
+    and the question worth asking on the back.
   - The **five-question decision card**, printable on its own page with a SETU lockup.
 - **Reflection notes** — spread across the course, autosaved locally, downloadable as
   a single text file at the end (including the three closing statements the script
@@ -127,7 +130,8 @@ The narrated content is in place from the script. **Every image in this course i
 still a placeholder** (a dashed box), because no photography or illustrations have
 been supplied yet. Two sets of links are also still needed — student support contact
 details, and the Blackboard/Moodle GenAI hubs — and both are flagged inside the course
-itself as well as in **`docs/CONTENT-TODO.md`**.
+itself as well as in **`docs/CONTENT-TODO.md`**. SETU's AI website, **ai.setu.ie**, is
+already linked from "Where to go next".
 
 ## Notes
 

@@ -569,6 +569,15 @@ hr.rule { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 .reflect textarea:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; border-color: var(--brand); }
 .reflect__saved { font-size: 13px; color: var(--text-mute); margin-top: 8px; height: 1.2em; }
 
+/* ---------------- Links in body copy ---------------- */
+/* Scoped to p/li children so it can never catch an anchor styled as a .btn.
+   Uses --info, not --accent: Grass Green on white falls short of AA for text. */
+.section p a:not(.btn), .section li a:not(.btn) {
+  color: var(--info); font-weight: 600;
+  text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px;
+}
+.section p a:not(.btn):hover, .section li a:not(.btn):hover { text-decoration-thickness: 2px; }
+
 /* ---------------- Buttons ---------------- */
 .btn {
   display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
@@ -582,6 +591,9 @@ hr.rule { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 .btn--ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
 .btn--ghost:hover { background: var(--surface-2); }
 .btn--accent { background: var(--accent); color: #fff; }
+/* Reveal buttons are the one place a .btn holds a full question, so a wrapped
+   label would otherwise centre against its single-line neighbours. */
+.btn[data-reveal-simple] { text-align: left; }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
 
 /* ---------------- Footer nav ---------------- */
@@ -697,6 +709,9 @@ hr.rule { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 
 /* ---------------- Flip cards ---------------- */
 .flip-card { perspective: 1000px; cursor: pointer; }
+/* Fill the grid row so cards sitting side by side share one height — the inner
+   grid would otherwise collapse to its own content and leave ragged edges. */
+.flip-card, .flip-card__inner { height: 100%; }
 .flip-card__inner {
   display: grid; transition: transform .5s ease; transform-style: preserve-3d;
 }
@@ -718,6 +733,7 @@ hr.rule { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 }
 .flip-card__back h3 { margin: 0 0 4px; font-size: 15px; color: var(--brand-strong); }
 .flip-card__back p { margin: 0; font-size: 14px; color: var(--text-soft); }
+.flip-card__back .flip-card__ask { margin-top: 8px; font-weight: 600; color: var(--brand-strong); }
 .flip-card:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: var(--radius-sm); }
 
 /* ---------------- Figure / image slot ---------------- */

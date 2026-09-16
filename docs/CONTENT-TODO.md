@@ -41,6 +41,8 @@ visible to anyone reviewing the course rather than buried in this file.
   Class Tutor, Student Services, Counselling Service, Students' Union, Centre for
   Academic Practice, IT Services. The tiles name each service; they need somewhere
   to go.
+- [x] **SETU's AI website** (Section 10, *Keep Your Thinking in the Loop*) —
+  https://ai.setu.ie now leads the "Where to go next" list.
 - [ ] **GenAI hub links** (Section 10, *Keep Your Thinking in the Loop*) — the
   Blackboard and Moodle GenAI hubs, and a direct link to the *SETU Student
   Guidelines for the Use of Generative AI*. The script points students to these
@@ -113,3 +115,38 @@ visible to anyone reviewing the course rather than buried in this file.
 - [ ] AI working group to review all sections for accuracy and SETU tone.
 - [ ] Accessibility sign-off against SETU's WCAG target.
 - [ ] After any edit, rebuild the SCORM package: `python3 scorm/build_scorm.py`.
+
+## 9. Review changes applied (September 2026)
+
+From the first round of SETU feedback on the student course:
+
+1. Banner copy rewritten (the original repeated "learning" three times); a full stop
+   was added to close the sentence.
+2. Banner reduced to the timing stat alone — the section and activity counts are gone.
+3. Welcome bullet 3 now says "GenAI" rather than "Generative AI". The two quoted
+   assessment instructions elsewhere (Assessment 3 in *Your Assessments*, and "Now
+   change one thing" in *Your AI Decision Check*) deliberately keep "Generative AI" —
+   they are verbatim quotes of what a lecturer would write.
+4. Colon added to "Because ultimately:".
+5. "weigh" → "consider" in the last confidence statement, in both the start and end
+   ratings (the two labels must stay identical for the start/end comparison to read).
+6. "Includes a decision" removed from *Understand AI*'s meta row.
+7. *Support or offload?* intro reworded for grammar, and the middle option relabelled
+   "It depends" → "Depends on the purpose". Every row's discussion note turns on the
+   purpose of the task, so the middle option now names a real position rather than
+   acting as a shrug. The notes still commit to a verdict for all five scenarios, so
+   "depends" is never the expected answer.
+8. The five responsible-AI considerations became flip cards. This also fixed a latent
+   bug in the shared `.flip-card` CSS: the inner grid collapsed to its own content, so
+   cards in a row had ragged heights. `.flip-card, .flip-card__inner { height: 100% }`
+   — worth porting back to the staff courses if they hit the same thing.
+9. Reveal buttons now set `text-align: left` (`.btn[data-reveal-simple]`). Question 4
+   in the final challenge wraps to two lines and was centring against its single-line
+   neighbours.
+10. Added https://ai.setu.ie to "Where to go next". This introduced the first
+    body-copy link in the course, so a link style came with it — `--info` (Barrow
+    Blue) rather than `--accent`, because Grass Green on white doesn't reach WCAG AA
+    for text.
+
+Still open from this round: whether ai.setu.ie should also appear in the contents
+panel's "SETU AI Courses" block, alongside the three staff courses.
