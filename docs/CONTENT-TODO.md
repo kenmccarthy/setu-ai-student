@@ -48,16 +48,16 @@ visible to anyone reviewing the course rather than buried in this file.
   Guidelines for the Use of Generative AI*. The script points students to these
   repeatedly, so the links matter more here than anywhere else in the course.
 
-## 3. Cross-course navigation (confirm)
+## 3. Contents-panel links (resolved)
 
-- [ ] The contents panel links to the three **staff** courses (AI Literacy, AI
-  Competency, AI Fluency) at their `setu.potential.ly` playlist URLs, under the
-  heading "SETU AI Courses". Confirm you want students pointed at the staff
-  programme; if not, swap that block for student-facing links (the GenAI hubs, the
-  Student Guidelines, the Academic Integrity course). It's one `<nav
-  class="course-links">` block in `index.html`.
-- [ ] Once this course has a hosted URL, add it to the same block in the three
-  staff-course repos if you want the link to be reciprocal.
+- [x] The contents panel used to link the three **staff** courses (AI Literacy, AI
+  Competency, AI Fluency) at their `setu.potential.ly` playlist URLs. Removed in
+  review as staff-facing; the panel now carries a single link to **ai.setu.ie**
+  under the heading "Find out more". The `.btn--literacy` / `--competency` /
+  `--fluency` colour rules went with them, so re-adding any of those buttons means
+  restoring the matching rule in `styles.css`.
+- [ ] Once this course has a hosted URL, consider adding it to the same block in
+  the three staff-course repos if you want the link to be reciprocal.
 
 ## 4. Completion / certificate
 

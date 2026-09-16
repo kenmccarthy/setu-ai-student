@@ -265,9 +265,6 @@ body::before {
    element that has to be kept in sync with it while scrolling. */
 .course-links { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
 .course-links .btn { width: 100%; justify-content: flex-start; color: #fff; }
-.course-links .btn--literacy   { background: var(--sea-green); }
-.course-links .btn--competency { background: var(--clover); }
-.course-links .btn--fluency    { background: var(--barrow-blue); }
 .course-links .btn--student    { background: var(--grass-green); }
 
 /* ---------------- Content column ---------------- */
