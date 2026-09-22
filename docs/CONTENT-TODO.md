@@ -66,6 +66,26 @@ visible to anyone reviewing the course rather than buried in this file.
   line (e.g. a name/title) or a QR/verify note, say so and it can be added. The
   learner types their own name; the LMS also records completion via SCORM.
 
+- [ ] **Confirm the completion requirement.** The certificate is now released only when
+  all eleven content sections are finished, and a section is finished when every
+  activity in it has been engaged with — 46 activities in total. Reflection textareas
+  are deliberately not required. The full rules are in the README under "Completion
+  rules"; the working group should confirm the requirement is proportionate before
+  go-live. The lightest sections are Understand AI, Working Effectively and Your
+  Wellbeing (one activity each); the heaviest is Responsible AI (nine).
+
+  Raised in review: a student could previously click the last section in the contents
+  list, enter a name and download a certificate without opening any content — and that
+  click also ticked every earlier section and reported 100% completion to the LMS. Both
+  are fixed. Navigation stays unrestricted by choice: students can still look ahead and
+  jump back, since locking sections blocks legitimate use and is a recurring
+  accessibility complaint. Only the reporting changed.
+
+  Note for the LMS deployment: because any browser-side gate can be bypassed with
+  developer tools, the SCORM completion call is the record that matters. It is now
+  gated on the same condition as the certificate, so a skipped course is no longer
+  recorded in Blackboard or Moodle as finished.
+
 ## 5. Attribution (done — confirm)
 
 - [x] The `.credits` line on the Done screen names the script author (Dr Hazel

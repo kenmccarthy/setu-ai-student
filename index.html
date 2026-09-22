@@ -934,14 +934,35 @@
       <!-- ---------- COMPLETE ---------- -->
       <section class="section" data-title="You're done" data-nav="Finish">
         <div class="section__card center">
-          <div class="done-badge">✓</div>
-          <span class="eyebrow" style="justify-content:center"><span class="dot"></span> Course complete</span>
-          <h1>Well done.</h1>
-          <p class="lede">You've completed <strong>AI at SETU: Using GenAI to Support Your Learning</strong>. You've looked at what GenAI actually is, told support apart from offloading, practised asking better questions, worked out how to check whether AI is allowed for an assessment, and weighed privacy, bias, copyright, wellbeing and environmental impact.</p>
+          <!-- One of these two is shown by course.js. The course used to
+               congratulate anyone who arrived here, including a learner who
+               had jumped straight to this section from the contents list. -->
+          <div class="finish-state" id="finishComplete" hidden>
+            <div class="done-badge">✓</div>
+            <span class="eyebrow" style="justify-content:center"><span class="dot"></span> Course complete</span>
+            <h1>Well done.</h1>
+            <p class="lede">You've completed <strong>AI at SETU: Using GenAI to Support Your Learning</strong>. You've looked at what GenAI actually is, told support apart from offloading, practised asking better questions, worked out how to check whether AI is allowed for an assessment, and weighed privacy, bias, copyright, wellbeing and environmental impact.</p>
+          </div>
+
+          <div class="finish-state" id="finishIncomplete" hidden>
+            <div class="done-badge done-badge--wait">◷</div>
+            <span class="eyebrow" style="justify-content:center"><span class="dot"></span> Almost there</span>
+            <h1>Not finished yet.</h1>
+            <p class="lede">There are still some sections to work through. Finish them and your certificate will appear on this page.</p>
+          </div>
           <hr class="rule" />
 
-          <!-- Certificate of completion -->
-          <div class="certgen" id="certgen">
+          <!-- Certificate of completion. Released by course.js only once every
+               content section is complete; until then the checklist below takes
+               its place and names what is still outstanding. -->
+          <div class="certlock" id="certLocked" hidden>
+            <h3>Your certificate is waiting</h3>
+            <p class="certlock__count" id="certLockCount" aria-live="polite">You've finished 0 of 11 sections.</p>
+            <p class="certlock__hint">A section counts as finished once you've worked through its activities. Pick up where you left off:</p>
+            <ul class="certlock__list" id="certLockList"></ul>
+          </div>
+
+          <div class="certgen" id="certgen" hidden>
             <h3>Download your certificate of completion</h3>
             <p style="margin:0;font-size:14.5px;color:var(--text-soft)">Enter your name as you'd like it to appear, then preview or download your certificate (save as PDF, or print).</p>
             <div class="certgen__row">

@@ -259,6 +259,10 @@ body::before {
 }
 #tocList a[aria-current="step"]::before { background: var(--brand); color: #fff; border-color: var(--brand); }
 #tocList a.is-done::before { background: var(--accent); color: #fff; border-color: var(--accent); content: "✓"; }
+#tocList a.is-partial::before {
+  background: transparent; color: var(--accent);
+  border-color: var(--accent); border-style: dashed;
+}
 
 /* Cross-course navigation — lives inside #toc (after the contents list) so
    it's part of the same single sticky/drawer box, rather than a separate
@@ -655,6 +659,10 @@ hr.rule { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
   color: #fff; display: grid; place-items: center; font-size: 42px;
   box-shadow: var(--shadow);
 }
+.done-badge--wait {
+  background: linear-gradient(135deg, var(--surface-2), var(--surface-2));
+  color: var(--text-mute); border: 2px dashed var(--border); box-shadow: none;
+}
 .center { text-align: center; }
 
 /* ---------------- Responsive: collapse sidebar ---------------- */
@@ -777,6 +785,29 @@ hr.rule { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 .credits p { margin: 0; }
 
 /* ---------------- Certificate ---------------- */
+/* Shown in place of the certificate form until every content section is
+   complete. It names what is outstanding rather than simply refusing, so the
+   learner can jump straight back to the work. */
+.certlock {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface-2); padding: 20px; margin: 22px 0; text-align: left;
+}
+.certlock h3 { margin: 0 0 6px; }
+.certlock__count { margin: 0; font-weight: 600; color: var(--brand-strong); }
+.certlock__hint { margin: 6px 0 0; font-size: 14px; color: var(--text-soft); }
+.certlock__list { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.certlock__jump {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; text-align: left; cursor: pointer;
+  font-family: var(--font); font-size: 15px; color: var(--text);
+  padding: 11px 14px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); background: var(--surface);
+}
+.certlock__jump:hover { border-color: var(--accent); background: var(--accent-tint); }
+.certlock__jump:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+.certlock__name { font-weight: 600; }
+.certlock__left { flex: none; font-size: 13px; color: var(--text-mute); }
+
 .certgen {
   border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--surface-2); padding: 20px; margin: 22px 0; text-align: left;

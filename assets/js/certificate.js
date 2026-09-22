@@ -53,7 +53,20 @@
     return false;
   }
 
+  // course.js hides this whole block until every section is complete, so this
+  // is a second lock rather than the only one: it keeps the buttons inert if
+  // the form is ever revealed by some other route.
+  function courseFinished() {
+    if (document.body.classList.contains("is-course-complete")) return true;
+    if (hint) {
+      hint.textContent = "Finish the remaining sections first — your certificate will unlock here.";
+      hint.style.color = "var(--danger)";
+    }
+    return false;
+  }
+
   if (previewBtn) previewBtn.addEventListener("click", function () {
+    if (!courseFinished()) return;
     if (!requireName()) return;
     fillCertificate();
     cert.classList.add("is-preview");
@@ -62,6 +75,7 @@
   });
 
   if (downloadBtn) downloadBtn.addEventListener("click", function () {
+    if (!courseFinished()) return;
     if (!requireName()) return;
     fillCertificate();
     cert.classList.add("is-preview");           // ensure it is renderable

@@ -23,11 +23,105 @@
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch (e) {}
     return s;
   }
+  // State version 2 replaced "furthest" (a single high-water mark) with a
+  // record of the individual activities the learner has actually engaged with.
+  // Under v1, jumping to the last section implicitly marked every earlier one
+  // complete, which drove the progress bar to 100%, ticked the whole contents
+  // list and released the certificate. v1 state is migrated by discarding its
+  // progress and keeping the learner's own writing (notes and ratings).
+  var STATE_VERSION = 2;
   var state = loadState();
-  var furthest = state.furthest || 0;      // furthest section index reached
+  if (state.version !== STATE_VERSION) {
+    state = { version: STATE_VERSION, reflections: state.reflections || {}, ratings: state.ratings || {} };
+    saveState(state);
+  }
+  var visited = state.visited || {};        // { sectionIndex: 1 } — sections opened
+  var steps = state.steps || {};            // { stepId: 1 }       — activities done
   var reflections = state.reflections || {};
   var ratings = state.ratings || {};       // { start: {statement: 1-5}, end: {...} }
   var scorm = window.SCORM || null;        // SCORM adapter (no-op if not in an LMS)
+
+  // The last section is the certificate; the ones before it carry the course.
+  var CONTENT_TOTAL = total - 1;
+
+  // ====================================================================
+  // Completion model
+  // Requirements are derived from the markup at load, so adding or removing
+  // an activity in index.html changes what a section demands with no list to
+  // keep in sync here. Each activity gets an id of "<section>:<type>:<n>",
+  // which is stable as long as the order of activities within a section is.
+  // ====================================================================
+  var bySection = [];        // [sectionIndex] -> [stepId]
+  var requiredIds = [];      // every stepId in the content sections
+
+  (function collectRequirements() {
+    sections.forEach(function (sec, i) {
+      var ids = [];
+      function add(type, nodes) {
+        Array.prototype.slice.call(nodes).forEach(function (el, n) {
+          var id = i + ":" + type + ":" + n;
+          el.setAttribute("data-step-id", id);
+          ids.push(id);
+        });
+      }
+      // Any answer counts. These are self-checks, not an assessment, so a
+      // wrong answer is still engagement — what we are ruling out is a
+      // learner who never stopped at all.
+      add("quiz", sec.querySelectorAll("[data-quiz]"));
+      add("srow", sec.querySelectorAll("[data-spectrum] .srow"));
+      add("flip", sec.querySelectorAll(".flip-card"));
+      add("reveal", sec.querySelectorAll("[data-reveal-simple]"));
+      add("chipset", sec.querySelectorAll("[data-chipset]"));
+      add("rating", sec.querySelectorAll(".rating__row"));
+      bySection[i] = ids;
+      if (i < CONTENT_TOTAL) requiredIds = requiredIds.concat(ids);
+    });
+  })();
+
+  // Reflection textareas are deliberately NOT required. They are private
+  // journalling, and compelling free text produces filler rather than thought.
+
+  function markStep(id) {
+    if (!id || steps[id]) return;
+    steps[id] = 1;
+    // Doing an activity implies being on its section, which keeps "all
+    // activities done" and "all sections visited" from ever disagreeing.
+    var sec = parseInt(id.split(":")[0], 10);
+    if (!isNaN(sec)) visited[sec] = 1;
+    saveState({ steps: steps, visited: visited });
+    refresh();
+  }
+
+  function stepsLeft(i) {
+    return (bySection[i] || []).filter(function (id) { return !steps[id]; }).length;
+  }
+
+  function sectionComplete(i) {
+    if (!visited[i]) return false;
+    return stepsLeft(i) === 0;   // true for a section with nothing to do
+  }
+
+  function sectionStarted(i) {
+    return !!visited[i] || (bySection[i] || []).some(function (id) { return !!steps[id]; });
+  }
+
+  function sectionsComplete() {
+    var n = 0;
+    for (var i = 0; i < CONTENT_TOTAL; i++) if (sectionComplete(i)) n++;
+    return n;
+  }
+
+  function courseComplete() {
+    return sectionsComplete() === CONTENT_TOTAL;
+  }
+
+  // The final section holds the certificate rather than any activities of its
+  // own, so it carries a tick only once the course behind it is finished —
+  // otherwise merely opening it would tick it, which is the very thing this
+  // model exists to prevent.
+  function tocDone(i) {
+    return i === CONTENT_TOTAL ? courseComplete() : sectionComplete(i);
+  }
 
   // ---- Build the table of contents -----------------------------------
   var tocList = document.getElementById("tocList");
@@ -47,9 +141,15 @@
   var fill = document.getElementById("progressFill");
   var pctLabel = document.getElementById("progressPct");
   var track = document.querySelector(".progress__track");
+  function progressPct() {
+    // Progress = activities actually completed, not sections walked past.
+    if (!requiredIds.length) return 0;
+    var done = requiredIds.filter(function (id) { return !!steps[id]; }).length;
+    return Math.round((done / requiredIds.length) * 100);
+  }
+
   function updateProgress() {
-    // Progress = furthest section reached out of the last index.
-    var pct = Math.round((furthest / (total - 1)) * 100);
+    var pct = progressPct();
     fill.style.width = pct + "%";
     pctLabel.textContent = pct + "%";
     track.setAttribute("aria-valuenow", String(pct));
@@ -60,35 +160,46 @@
   var prevBtn = document.getElementById("prevBtn");
   var nextBtn = document.getElementById("nextBtn");
 
+  // Repaint everything that depends on completion state. Called on navigation
+  // and whenever an activity is completed, so the contents ticks, the bar and
+  // the certificate panel always agree with each other.
+  function refresh() {
+    tocLinks.forEach(function (a, idx) {
+      a.removeAttribute("aria-current");
+      var done = tocDone(idx);
+      a.classList.toggle("is-done", done);
+      a.classList.toggle("is-partial", !done && sectionStarted(idx));
+      if (idx === current) a.setAttribute("aria-current", "step");
+    });
+
+    updateProgress();
+    renderCertGate();
+
+    // Report to the LMS (no-op when running as plain HTML). Completion is
+    // gated on the same condition as the certificate: under v1 this fired the
+    // moment the learner landed on the last section, so a course that was
+    // skipped through was recorded in the LMS as finished.
+    if (scorm) {
+      scorm.setProgress(progressPct());
+      scorm.setLocation(current);
+      if (courseComplete()) scorm.complete();
+    }
+  }
+
   function go(i) {
     i = Math.max(0, Math.min(total - 1, i));
     sections[current].classList.remove("is-active");
     sections[i].classList.add("is-active");
     current = i;
 
-    if (i > furthest) { furthest = i; saveState({ furthest: furthest }); }
-
-    // TOC active + done states
-    tocLinks.forEach(function (a, idx) {
-      a.removeAttribute("aria-current");
-      a.classList.toggle("is-done", idx < furthest && idx !== i);
-      if (idx === i) a.setAttribute("aria-current", "step");
-    });
+    if (!visited[i]) { visited[i] = 1; saveState({ visited: visited }); }
 
     // Pager
     prevBtn.disabled = i === 0;
     nextBtn.textContent = i === total - 1 ? "Finish ✓" : "Next →";
     pagerCount.textContent = "Section " + (i + 1) + " of " + total;
 
-    updateProgress();
-
-    // Report to the LMS (no-op when running as plain HTML)
-    if (scorm) {
-      var pct = Math.round((furthest / (total - 1)) * 100);
-      scorm.setProgress(pct);
-      scorm.setLocation(current);
-      if (furthest >= total - 1) scorm.complete();
-    }
+    refresh();
 
     document.getElementById("main").scrollIntoView({ block: "start" });
     window.scrollTo(0, 0);
@@ -143,6 +254,7 @@
           else if (inp.checked) o.classList.add("incorrect");
         });
         feedback.classList.add("show");
+        markStep(quiz.getAttribute("data-step-id"));
       });
     });
   });
@@ -208,6 +320,7 @@
     btn.addEventListener("click", function () {
       var el = document.getElementById(btn.getAttribute("data-reveal-simple"));
       if (el) { el.hidden = false; btn.disabled = true; }
+      markStep(btn.getAttribute("data-step-id"));
     });
   });
 
@@ -237,6 +350,7 @@
         opts.forEach(function (o) { o.setAttribute("aria-pressed", "false"); });
         b.setAttribute("aria-pressed", "true");
         if (note) { note.textContent = row.getAttribute("data-note"); note.classList.add("show"); }
+        markStep(row.getAttribute("data-step-id"));
       });
     });
   });
@@ -264,17 +378,31 @@
         : "You selected " + n + " of " + chips.length + ".";
     }
 
+    function paintReveal() {
+      if (revealBtn && !revealBtn.hidden) {
+        // Only enabled once a choice has been made, so the activity cannot be
+        // cleared by clicking straight past it.
+        var spent = wrap.getAttribute("data-chipset-done") === "true";
+        revealBtn.disabled = spent || count() === 0;
+      }
+    }
+
     chips.forEach(function (chip) {
       chip.addEventListener("click", function () {
         chip.setAttribute("aria-pressed", chip.getAttribute("aria-pressed") === "true" ? "false" : "true");
         paintTally();
+        paintReveal();
       });
     });
     paintTally();
+    paintReveal();
 
     if (revealBtn && box) revealBtn.addEventListener("click", function () {
+      if (count() === 0) return;
       box.hidden = false;
+      wrap.setAttribute("data-chipset-done", "true");
       revealBtn.disabled = true;
+      markStep(wrap.getAttribute("data-step-id"));
     });
   });
 
@@ -311,6 +439,7 @@
           ratings[key][row.getAttribute("data-statement")] = parseInt(btn.getAttribute("data-v"), 10);
           saveState({ ratings: ratings });
           paint(row);
+          markStep(row.getAttribute("data-step-id"));
         });
       });
       paint(row);
@@ -324,6 +453,7 @@
     function toggle() {
       var open = card.getAttribute("aria-expanded") === "true";
       card.setAttribute("aria-expanded", open ? "false" : "true");
+      markStep(card.getAttribute("data-step-id"));
     }
     card.addEventListener("click", toggle);
     card.addEventListener("keydown", function (e) {
@@ -382,15 +512,79 @@
     });
   }
 
+  // ====================================================================
+  // Certificate gate
+  // The final section shows one of two things: the certificate form once the
+  // course is genuinely finished, or a live checklist of what is outstanding
+  // with a way to jump straight there. Previously the form was always present
+  // and asked only for a name, so the certificate could be had without
+  // opening a single activity.
+  // ====================================================================
+  var certLocked = document.getElementById("certLocked");
+  var certLockCount = document.getElementById("certLockCount");
+  var certLockList = document.getElementById("certLockList");
+  var certGen = document.getElementById("certgen");
+  var finishComplete = document.getElementById("finishComplete");
+  var finishIncomplete = document.getElementById("finishIncomplete");
+
+  function renderCertGate() {
+    var complete = courseComplete();
+    document.body.classList.toggle("is-course-complete", complete);
+    if (certGen) certGen.hidden = !complete;
+    if (finishComplete) finishComplete.hidden = !complete;
+    if (finishIncomplete) finishIncomplete.hidden = complete;
+    if (!certLocked) return;
+
+    certLocked.hidden = complete;
+    if (complete) return;
+
+    var done = sectionsComplete();
+    if (certLockCount) {
+      certLockCount.textContent = "You've finished " + done + " of " + CONTENT_TOTAL +
+        (CONTENT_TOTAL === 1 ? " section." : " sections.");
+    }
+    if (!certLockList) return;
+
+    certLockList.innerHTML = "";
+    for (var i = 0; i < CONTENT_TOTAL; i++) {
+      if (sectionComplete(i)) continue;
+      certLockList.appendChild(lockRow(i));
+    }
+  }
+
+  function lockRow(idx) {
+    var sec = sections[idx];
+    var li = document.createElement("li");
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "certlock__jump";
+
+    var name = document.createElement("span");
+    name.className = "certlock__name";
+    name.textContent = (idx + 1) + ". " +
+      (sec.getAttribute("data-nav") || sec.getAttribute("data-title") || "Section " + (idx + 1));
+
+    var left = document.createElement("span");
+    left.className = "certlock__left";
+    var n = stepsLeft(idx);
+    // A visited-but-incomplete section always has at least one activity left,
+    // because that is what "incomplete" means once it has been opened.
+    left.textContent = !visited[idx] ? "Not opened yet"
+      : n === 1 ? "1 activity left" : n + " activities left";
+
+    btn.appendChild(name);
+    btn.appendChild(left);
+    btn.addEventListener("click", function () { go(idx); });
+    li.appendChild(btn);
+    return li;
+  }
+
   // ---- Init -----------------------------------------------------------
   var startAt = 0;
   if (scorm && scorm.init()) {
     // Inside an LMS: resume to the last-viewed section if recorded.
     var loc = scorm.getLocation();
-    if (loc !== null && loc >= 0 && loc < total) {
-      furthest = Math.max(furthest, loc);
-      startAt = loc;
-    }
+    if (loc !== null && loc >= 0 && loc < total) startAt = loc;
   }
   go(startAt);
   updateProgress();

@@ -77,8 +77,10 @@ component:
 
 ## Features
 
-- **Progress bar** that remembers the furthest point reached (saved in the browser).
-- **Contents panel** for jumping between sections; collapses to a drawer on mobile.
+- **Progress bar** driven by activities actually completed, not sections walked past
+  (saved in the browser). See "Completion rules" below.
+- **Contents panel** for jumping between sections; collapses to a drawer on mobile. A
+  section shows a solid tick when finished and a dashed ring when started but not.
 - **Interactive activities**, each drawn from the script:
   - **Confidence self-rating** — 1–5 scale on five statements, taken at the start and
     repeated at the end, with an inline "started at X · now Y" comparison.
@@ -98,10 +100,44 @@ component:
 - **Reflection notes** — spread across the course, autosaved locally, downloadable as
   a single text file at the end (including the three closing statements the script
   specifies).
-- **Certificate of completion** — the learner enters their name and downloads a branded
-  certificate (print / save as PDF); the LMS also records completion via SCORM.
+- **Certificate of completion** — released only once every section is finished; the
+  learner then enters their name and downloads a branded certificate (print / save as
+  PDF). The LMS separately records completion via SCORM, gated on the same condition.
 - Accessible (keyboard nav, skip link, focus states, reduced-motion support),
   responsive, light/dark aware, and printable to PDF.
+
+## Completion rules
+
+Navigation is deliberately unrestricted — students can browse ahead, and jump back to a
+section a lecturer referenced. What is restricted is what counts as *progress*.
+
+A section is finished once every activity in it has been engaged with:
+
+| Activity | Finished when |
+| --- | --- |
+| Self-check question | an option is chosen (any option — these are self-checks, not an assessment) |
+| Spectrum row | one of its three options is chosen |
+| Flip card | it has been flipped |
+| Progressive reveal | the reveal button has been clicked |
+| Chip set | at least one chip is selected and the reveal clicked |
+| Confidence rating row | a 1–5 value is chosen |
+
+Reflection textareas are **not** required. They are private journalling, and compelling
+free text produces filler rather than thought.
+
+That comes to 46 activities across the eleven content sections. The progress bar reads
+completed activities as a percentage of those 46, so it reaches 100% at exactly the
+moment the certificate unlocks. Until then the final section shows a live checklist of
+what is outstanding, with a link into each unfinished section.
+
+Requirements are derived from the markup at load (`collectRequirements` in
+`assets/js/course.js`), so adding or removing an activity in `index.html` changes what a
+section demands with no list to keep in sync.
+
+One limitation worth stating plainly: this is a static site with no server, so a
+determined student with browser developer tools can bypass any of this. The gate stops
+casual skipping, which is the behaviour it was built to address. The SCORM completion
+call is the record that carries weight, because the LMS holds it.
 
 ## What this course changes versus the staff-course template
 
